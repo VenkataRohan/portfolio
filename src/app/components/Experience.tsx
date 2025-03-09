@@ -9,14 +9,22 @@ const steps = [
     duration: "June 2023 - Present",
     companyName: "Equinix",
     description:
-      "Simplified the Requisition creation process using React, TypeScript, and Tailwind CSS, reducing form submission errors by 20% and increasing process efficiency by 25%. Built 10 Node.js scripts to automate data reconciliation during Oracle R12 to Oracle Fusion migration. Developed a DAG Visualizer using React Flow to reduce deployment errors by 30%.",
+      `Simplified the Requisition creation process by implementing React, TypeScript, and Tailwind CSS, reducing form submission errors
+      by 20%, increasing process efficiency by 25%, and streamlining data submission through seamless API integration for seamless and
+      accurate data submission.
+      Leveraging APIs to ensured data accuracy and consistency between the systems, by building 10 Node.js scripts to automate data
+      Reconciliation processes during the Migration from Oracle R12 to Oracle Fusion. Significantly reducing manual intervention.`,
   },
   {
     title: "Software Developer Intern - Equinix",
     duration: "February 2023 - June 2023",
     companyName: "Equinix",
     description:
-      "Created an Oracle Integration Cloud (OIC) integration to automate ledger postings, saving 24 hours of manual effort per month. Developed a DAG Visualizer using React Flow to visualize task dependencies and reduce deployment errors.",
+      `Developed a DAG Visualizer using React Flow to preview DAGs before deployment. Generate interactive graphs, allowing users to
+      visualize upstream and downstream task dependencies and reducing deployment errors up to 30% by improving task validation.
+      Created a robust Oracle Integration Cloud (OIC) integration to eliminate discrepancies in ledger postings, fully automating the
+      process to save 24 hours of manual effort per month and drastically minimise the risk of manual errors.
+      `,
   },
   {
     title: "Software Developer Intern - 5th Bridge Data Technologies LLP",
@@ -130,7 +138,7 @@ const Experience = () => {
                         position="absolute"
                         top="100%"
                         left="50%"
-                        h="calc(100% + 190px)" // Adjust based on spacing
+                        // h="calc(100%)" // Adjust based on spacing
                         w="5px"
                         bg="cyan.500"
                         opacity="0.4"

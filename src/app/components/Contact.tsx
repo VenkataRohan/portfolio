@@ -29,15 +29,15 @@ const Contact = () => {
         </motion.h2>
 
         {/* Subtitle */}
-        <motion.p
-          className="text-lg text-gray-300 mb-12 max-w-2xl mx-auto"
+        <motion.div
+          className="flex text-center text-lg text-gray-300 mb-12 max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 10 }}
           transition={{ duration: 1, delay: 0.3 }}
           viewport={{ once: true }}
         >
           Feel free to reach out to me via email or social media. I'm always open to new opportunities, collaborations, or just a friendly chat!
-        </motion.p>
+        </motion.div>
 
         {/* Buttons */}
         <motion.div
