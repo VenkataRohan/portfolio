@@ -3,7 +3,14 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Box, Heading, Text, VStack, HStack } from "@chakra-ui/react";
 
-
+const aboutContent = [
+  {
+    text: `I'm a <strong>Collaborative Full-Stack Software Developer</strong> with expertise in <strong>React.js</strong>, <strong>Node.js</strong>, 
+    and <strong>Azure cloud services</strong>. I specialize in delivering enterprise-grade applications, <strong>RAG systems</strong>, and process automation tools. With a strong background 
+    in <strong>open-source contributions</strong>, <strong>CI/CD implementation</strong>, and <strong>cross-functional team collaboration</strong>, I've made measurable impact on operational 
+    efficiency and user satisfaction. I'm passionate about building scalable solutions and always eager to learn and adapt to new challenges in the ever-evolving tech landscape.`
+  }
+];
 
 const AboutMe = () => {
   return (
@@ -38,7 +45,7 @@ const AboutMe = () => {
         <div className="flex flex-col md:flex-row items-center">
           {/* Image */}
           <motion.div
-            className="lg:pl-20 md:w-1/2 mt-8 md:mt-0 w-full"
+            className="lg:pl-4 md:w-1/2 mt-8 md:mt-0 w-full"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -54,23 +61,19 @@ const AboutMe = () => {
           </motion.div>
 
           <motion.div
-            className="flex flex-col center md:w-1/2  md:pl-6  py-4"
+            className="flex flex-col center md:w-1/2  md:pl-2  py-1"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             // viewport={{ once: true }}
           >
-            <p className="text-lg text-gray-50 mb-6">
-              I'm a passionate <strong>full-stack developer</strong> with expertise in building scalable and efficient web applications using modern technologies like{' '}
-              <strong>React.js</strong>, <strong>Node.js</strong>, <strong>TypeScript</strong>, and <strong>Tailwind CSS</strong>. I specialize in creating seamless user experiences and robust backend systems.
-            </p>
-            <p className="text-lg text-gray-50 mb-6">
-              With a strong foundation in <strong>microservices architecture</strong>, <strong>real-time systems</strong>, and <strong>cloud technologies</strong>, I've successfully delivered projects that improve efficiency and user engagement.
-            </p>
-            <p className="text-lg text-gray-50">
-              I graduated from <strong>Mahindra University</strong> with a CGPA of <strong>8.5</strong>, and I've contributed to open-source projects like{' '}
-              <strong>LightDash</strong> and <strong>Rocket.Chat</strong>. I'm always eager to learn and adapt to new challenges in the ever-evolving tech landscape.
-            </p>
+            {aboutContent.map((content, index) => (
+              <p 
+                key={index} 
+                className={`text-lg text-gray-50 ${index < aboutContent.length - 1 ? 'mb-6' : ''}`}
+                dangerouslySetInnerHTML={{ __html: content.text }}
+              />
+            ))}
           </motion.div>
         </div>
       </div>

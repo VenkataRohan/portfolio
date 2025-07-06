@@ -1,14 +1,18 @@
 import { Text, Box } from "@chakra-ui/react";
 import { motion } from 'framer-motion';
 
-const skills = ['React.js', 'Node.js', 'Tailwind CSS', 'PostgreSQL', 'MongoDB' ,'Docker', 'RabbitMQ', 'Kafka', 'TypeScript', 'Java', 'Python' ,'Nginx' ];
+const skills = ['React.js', 'Node.js', 'Express.js', 'TypeScript', 'Java', 'Python', 
+  'PostgreSQL', 'MongoDB' ,'Docker', 'RabbitMQ', 'Kafka', ,'Nginx', 'Tailwind CSS',
+  'Azure App Service', 'Azure Functions', 'Azure Cosmos DB', 'Azure AI Search', 'Github Actions'
+  ,'Prisma', 'Web Socket'
+];
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2, // Stagger animations for each child
+      staggerChildren: 0.15, // Stagger animations for each child
     },
   },
 };
@@ -32,7 +36,7 @@ const Skill: React.FC = () => (
       <motion.div
           initial={{ opacity: 0, y: -20, x: -100 }}
           whileInView={{ opacity: 1, y: 0, x: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.1 }}
         // viewport={{ once : true }}
         >
       <Box

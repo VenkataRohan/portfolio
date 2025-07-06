@@ -14,13 +14,15 @@ const Header = () => {
       height="auto"
       alignItems="center"
     >
-      <Flex
-        mx="auto"
-        px={6}
-        m={1}
-        justify="space-between"
-        align="center"
-      >
+              <Flex
+          mx="auto"
+          px={[4, 6]}
+          m={1}
+          justify="space-between"
+          align="center"
+          w="full"
+          maxW="100vw"
+        >
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -29,7 +31,7 @@ const Header = () => {
         >
           <Link
             href="#home"
-            className="text-2xl font-bold"
+            className="text-lg sm:text-xl md:text-2xl font-bold"
             bgGradient="linear(to-r, gray.500, green.500)"
             _hover={{ bgGradient: "linear(to-r, gray.600, green.600)" }}
             bgClip={["text"]}
@@ -61,13 +63,13 @@ const Header = () => {
             _hover={{ bgGradient: 'linear(to-r, purple.500, blue.400)', borderColor: 'purple.500' }}
             color="transparent"
             bgClip="text"
-            fontSize="2xl"
+            fontSize={["lg", "xl", "2xl"]}
             fontWeight="bold"
             transition="all 0.3s"
             border="2px"
             borderColor="blue.400"
             borderRadius="md"
-            px={2}
+            px={[1, 2]}
             display={{ base: 'none', md: 'block' }} 
           >
             Best Project
@@ -86,7 +88,7 @@ const Header = () => {
         {/* Navigation Links */}
         <Flex
           as="nav"
-          gap={8}
+          gap={[4, 6, 8]}
           align="center"
           justify="end"
           display={{ base: isOpen ? 'flex' : 'none', md: 'flex' }}
@@ -103,11 +105,11 @@ const Header = () => {
             >
               <Link
                 href={`#${link.toLowerCase()}`}
-                className="text-lg font-semibold text-gray-300 hover:text-purple-400 transition-colors duration-300"
+                className="text-sm sm:text-base md:text-lg font-semibold text-gray-300 hover:text-purple-400 transition-colors duration-300"
                 bgGradient="linear(to-r, pink.200, green.200)"
                 _hover={{ bgGradient: "linear(to-r, pink.600, green.600)" }}
                 bgClip={["text"]}
-                px={2}
+                px={[1, 2]}
               >
                 {link}
               </Link>

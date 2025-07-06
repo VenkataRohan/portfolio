@@ -16,96 +16,6 @@ interface ProjectCardProps {
   onClick: () => void;
 }
 
-// {
-//   title: 'LightDash',
-//   description: `Implemented frontend functionality for auto-triggering threshold configuration modals using threshold uuid. Reduced manual
-//   configuration steps by 30%, improving setup time and enhancing the overall user experience for configuring alerts.`,
-//   techStack: ['React', 'Node.js'],
-//   githubLink: 'https://github.com/VenkataRohan/stock-exchange',
-//   bgColor: 'linear(to-br, teal.400, blue.500)', // Gradient background
-//   isOpenSource : true
-// },
-// {
-//   title: 'Cal.com',
-//   description: `Enhanced user experience by adding functionality to preserve the order of questions asked during the booking process, ensuring
-//   that confirmation emails are more intuitive and accurate.`,
-//   techStack: ['Next.js'],
-//   githubLink: 'https://github.com/lightdash/lightdash',
-//   bgColor: 'linear(to-br, red.400, green.500)',
-//   isOpenSource : true
-// },
-// {
-//   title: 'Rocket.Chat',
-//   description: `Developed and raised a PR for the Notify on Reactions feature, enabling users to receive notifications for reactions added to their
-//   messages. Improved user engagement by an estimated 20% in team interactions. Collaborated closely with project maintainers.`,
-//   techStack: ['React', 'Meteor.js', 'TypeScript'],
-//   githubLink: 'https://github.com/RocketChat/Rocket.Chat',
-//   bgColor: 'linear(to-br, purple.400, gray.500)', // Gradient background
-//   isOpenSource : true
-// },
-
-// const projects = [
-//   {
-//     title: 'LightDash',
-//     description: `Implemented frontend functionality for auto-triggering threshold configuration modals using threshold uuid. Reduced manual
-//     configuration steps by 30%, improving setup time and enhancing the overall user experience for configuring alerts.`,
-//     techStack: ['React', 'Node.js'],
-//     githubLink: 'https://github.com/VenkataRohan/stock-exchange',
-//     bgColor: 'linear(to-br, teal.400, blue.500)', // Gradient background
-//     isOpenSource : true
-//   },
-//   {
-//     title: 'Cal.com',
-//     description: `Enhanced user experience by adding functionality to preserve the order of questions asked during the booking process, ensuring
-//     that confirmation emails are more intuitive and accurate.`,
-//     techStack: ['Next.js'],
-//     githubLink: 'https://github.com/lightdash/lightdash',
-//     bgColor: 'linear(to-br, red.400, green.500)',
-//     isOpenSource : true
-//   },
-//   {
-//     title: 'Rocket.Chat',
-//     description: `Developed and raised a PR for the Notify on Reactions feature, enabling users to receive notifications for reactions added to their
-//     messages. Improved user engagement by an estimated 20% in team interactions. Collaborated closely with project maintainers.`,
-//     techStack: ['React', 'Meteor.js', 'TypeScript'],
-//     githubLink: 'https://github.com/RocketChat/Rocket.Chat',
-//     bgColor: 'linear(to-br, purple.400, gray.500)', // Gradient background
-//     isOpenSource : true
-//   },
-//   {
-//     title: 'Stock Exchange',
-//     description: `Created a full-stack application that simulates Real time trading of stocks and containerized using Docker for efficient deployment.
-//     processing, optimizing for high performance and fault tolerance and utilised Prisma ORM for database manipulation.Utilised Nginx for Load Balancing across websockets servers`,
-//     techStack: ['React.js','Node.js','Typescript','RabbitMQ','PostgreSQL','Prisma','Docker','Nginx'],
-//     githubLink: 'https://github.com/VenkataRohan/stock_exchange',
-//     bgColor: 'linear(to-br, purple.400, gray.500)', // Gradient background
-//   },
-//   {
-//     title: 'Social Media App',
-//     description: `Developed a cross-platform mobile application allowing users to log in via email, send messages using Socket.io, and share live
-//     locations through expo-location and react-native-maps enhancing user interaction and engagement.
-//     Added features like image, video, and document sharing, voice messages, scheduled messaging, group creation.`,
-//     techStack: ['React Native', 'Node.js', 'Socket.io', 'Firebase'],
-//     githubLink: 'https://github.com/VenkataRohan/expo-client',
-//     bgColor: 'linear(to-br, purple.400, gray.500)', // Gradient background
-//   },
-//   {
-//     title: 'Parents Portal',
-//     description: `Built a web application that displays marks secured by the student, his attendance, List of holidays of the current semester.
-//     Added forgot password feature, OTP will be sent to registered email (Nodemailer). Allows parents to register a complaint.
-//     Worked on staff login feature which enables staff members to edit the marks and attendance of the student.`,
-//     techStack: ['Node.js', 'MySQl'],
-//     githubLink: 'https://github.com/VenkataRohan/expo-client',
-//     bgColor: 'linear(to-br, purple.400, gray.500)', // Gradient background
-//   },
-//   {
-//     title: 'Interior Design',
-//     description: `VR project - Reduced time and human efforts by 90% by creating a web application which allows users to design their room i.e move objects anywhere in the room using DragControls package and change the color of the objects and scale them to fit in the room using DatGUl package.`,
-//     techStack: ['Three.js'],
-//     githubLink: 'https://github.com/VenkataRohan/interior-design',
-//     bgColor: 'linear(to-br, purple.400, gray.500)', // Gradient background
-//   },
-// ];
 
 const projects = [
   {
@@ -276,8 +186,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
 const Project: React.FC = () => {
 
-  const SLOW_DURATION = 50;
-  const FAST_DURATION = 10;
+  const SLOW_DURATION = 100;
+  const FAST_DURATION = 25;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedProject, setSelectedProject] = useState<ProjectCardProps | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);

@@ -100,7 +100,7 @@ const BestProject = () => {
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.3 }}
                         viewport={{ amount: 0.1 }} // Trigger when 50% of the element is in view
                     >
                         <Heading

@@ -98,11 +98,11 @@ const Home = () => {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="flex flex-col md:flex-row items-center justify-center gap-12 z-10 max-w-6xl mx-auto px-8"
+        className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 z-10 w-full max-w-6xl mx-auto px-4 md:px-8"
       >
         {/* Profile Picture */}
         <motion.div
-          className="w-48 h-48 md:w-64 md:h-64 mt-24 md:mt-0 rounded-full overflow-hidden border-4 border-white/20 hover:border-purple-500 transition-all duration-300"
+          className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 mt-16 md:mt-0 rounded-full overflow-hidden border-4 border-white/20 hover:border-purple-500 transition-all duration-300"
           whileHover={{ scale: 1.05 }}
         >
           <Image
@@ -110,13 +110,13 @@ const Home = () => {
             alt="Venkata Rohan"
             width={256}
             height={256}
-            className="object-cover"
+            className="object-cover w-full h-full"
           />
         </motion.div>
 
         {/* Text Content */}
         <motion.div
-          className="text-left space-y-4 md:w-1/2"
+          className="text-center md:text-left space-y-3 md:space-y-4 w-full md:w-1/2"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
@@ -128,12 +128,12 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
           >
-            <p className="text-4xl md:text-6xl ">Hi, I'm Venkata Rohan</p>
+            <p className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl break-words">Hi, I'm Venkata Rohan</p>
           </motion.h1>
 
           {/* Subtitle */}
           <motion.p
-            className="text-lg md:text-xl font-bold text-gray-300"
+            className="text-sm sm:text-lg md:text-xl font-bold text-gray-300 break-words"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1 }}
@@ -142,7 +142,7 @@ const Home = () => {
           </motion.p>
 
           <motion.p
-            className="text-lg md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-lime-600"
+            className="text-sm sm:text-lg md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-lime-600 break-words"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1 }}
@@ -151,7 +151,7 @@ const Home = () => {
           </motion.p>
           {/* Links */}
           <motion.div
-            className="flex gap-8 pt-2"
+            className="flex flex-wrap justify-center md:justify-start gap-4 md:gap-8 pt-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
@@ -160,7 +160,7 @@ const Home = () => {
               href="https://github.com/VenkataRohan"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:text-purple-400 transition-colors text-lg font-semibold flex items-center gap-2"
+              className="text-white hover:text-purple-400 transition-colors text-sm sm:text-lg font-semibold flex items-center gap-1 md:gap-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +178,7 @@ const Home = () => {
               href="https://www.linkedin.com/in/venkata-rohan"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:text-purple-400 transition-colors text-lg font-semibold flex items-center gap-2"
+              className="text-white hover:text-purple-400 transition-colors text-sm sm:text-lg font-semibold flex items-center gap-1 md:gap-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +195,7 @@ const Home = () => {
             <a
               href="./Venkata_Rohan_Resume.pdf" // Update this path
               download="Venkata_Rohan_Resume.pdf"
-              className="text-white hover:text-purple-400 transition-colors text-lg font-semibold flex items-center gap-2"
+              className="text-white hover:text-purple-400 transition-colors text-sm sm:text-lg font-semibold flex items-center gap-1 md:gap-2"
             >
                <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -232,15 +232,20 @@ const Home = () => {
 
           {/* Description */}
           <motion.div
-            className="flex flex-col center w-full"
+            className="flex flex-col w-full"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <p className="text-lg text-gray-50 mb-6 ">
-              Highly organized and motivated individual with strong analytical and mathematical skills. A quick learner, the object is to contribute significantly in the challenging high-level professional environment.
-            </p>
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 md:p-6 border border-white/10">
+              <p className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed">
+                Strategic-minded professional with strong analytical acumen and mathematical proficiency, 
+                characterized by rapid learning agility and a demonstrated ability to excel in demanding, 
+                high-stakes professional environments. Focused on making substantial contributions through 
+                technical expertise and innovative problem-solving approaches.
+              </p>
+            </div>
           </motion.div>
         </motion.div>
       </motion.div>

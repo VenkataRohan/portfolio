@@ -1,44 +1,48 @@
 "use client";
-import { Box, Heading, Text, VStack, HStack } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, HStack, UnorderedList, ListItem } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { useInView } from "react-intersection-observer";
 
 const steps = [
   {
-    title: "Software Developer - Equinix",
+    title: "Software Developer @ Equinix",
     duration: "June 2023 - Present",
     companyName: "Equinix",
-    description:
-      `Simplified the Requisition creation process by implementing React, TypeScript, and Tailwind CSS, reducing form submission errors
-      by 20%, increasing process efficiency by 25%, and streamlining data submission through seamless API integration for seamless and
-      accurate data submission.
-      Leveraging APIs to ensured data accuracy and consistency between the systems, by building 10 Node.js scripts to automate data
-      Reconciliation processes during the Migration from Oracle R12 to Oracle Fusion. Significantly reducing manual intervention.`,
+    description: [
+      "Built **HRGPT** - a **RAG (Retrieval-Augmented Generation)** system using **vector database** technology for intelligent HR assistance, achieving **95% user satisfaction** and reducing query response time by **85%**.",
+      "Developed **vectorization pipeline** for ServiceNow knowledge articles and deployed **webhook** in **Azure Function App** using **Node.js** for real-time database updates, improving knowledge retrieval accuracy by **90%**.",
+      "Established **CI/CD pipeline** using **GitHub Actions** for automated deployment and designed **ChatGPT-like interface** using **React.js** for HRGPT frontend, deployed **Node.js** server on **Azure App Service**.",
+      "Engineered a **full-stack application** to streamline user reassignment process in **Coupa**, ensuring pending approvals from departed employees were automatically transferred to their respective managers using **React**, **Node.js** and **MySQL**, reducing reassignment time by **80%**.",
+      "Streamlined work order approval process in **SAP FieldGlass** using **Node.js** integrated with **MS Teams**, allowing users to approve or reject directly from Teams, reducing manual effort by **75%**.",
+      "Automated visualization of supplier information from **Coupa** to **Oracle Fusion** using **React** and **Node.js**, reducing manual checking time by **90%** and ensuring accurate data flow by tracking incidents in **ServiceNow**."
+    ],
   },
   {
-    title: "Software Developer Intern - Equinix",
+    title: "Software Developer Intern @ Equinix",
     duration: "February 2023 - June 2023",
     companyName: "Equinix",
-    description:
-      `Developed a DAG Visualizer using React Flow to preview DAGs before deployment. Generate interactive graphs, allowing users to
-      visualize upstream and downstream task dependencies and reducing deployment errors up to 30% by improving task validation.
-      Created a robust Oracle Integration Cloud (OIC) integration to eliminate discrepancies in ledger postings, fully automating the
-      process to save 24 hours of manual effort per month and drastically minimise the risk of manual errors.
-      `,
+    description: [
+      "Developed a **DAG Visualizer** using **React Flow** to preview DAGs before deployment, generating interactive graphs for visualizing upstream and downstream task dependencies, reducing deployment errors by **30%**.",
+      "Created a robust **Oracle Integration Cloud (OIC)** integration to eliminate discrepancies in ledger postings, fully automating the process to save **24 hours** of manual effort per month and minimizing risk of manual errors."
+    ],
   },
   {
-    title: "Software Developer Intern - 5th Bridge Data Technologies LLP",
+    title: "Software Developer Intern @ 5th Bridge Data Technologies LLP",
     duration: "July 2022 - August 2022",
     companyName: "5th Bridge Data Technologies LLP",
-    description:
-      "Implemented customisable Kendo grids and multi-step forms in React for school supply list management. Built APIs to retrieve and update quote request data in the database.",
+    description: [
+      "Implemented **customizable Kendo grids** and **multi-step forms** in **React** for school supply list management.",
+      "Built **APIs** to retrieve and update quote request data in the database."
+    ],
   },
   {
-    title: "Backend Developer Intern - Content Erra",
+    title: "Backend Developer Intern @ Content Erra",
     duration: "June 2021 - July 2021",
     companyName: "Content Erra",
-    description:
-      "Designed an algorithm with O(n) time complexity to reduce manual effort by 50%, extracting and processing disability benefits data efficiently.",
+    description: [
+      "Designed an algorithm with **O(n) time complexity** to reduce manual effort by **50%**.",
+      "Extracting and processing **disability benefits data** efficiently."
+    ],
   },
 ];
 
@@ -176,7 +180,21 @@ const Experience = () => {
                         {step.companyName}
                       </Text>
                       <Text mt={4} color="gray.300">
-                        {step.description}
+                        <UnorderedList spacing={2}>
+                          {step.description.map((point, pointIndex) => (
+                            <ListItem key={pointIndex} color="gray.300">
+                              {point.split('**').map((part, partIndex) => 
+                                partIndex % 2 === 1 ? (
+                                  <Text as="span" key={partIndex} fontWeight="bold" color="cyan.200">
+                                    {part}
+                                  </Text>
+                                ) : (
+                                  part
+                                )
+                              )}
+                            </ListItem>
+                          ))}
+                        </UnorderedList>
                       </Text>
                     </Box>
                   </Box>

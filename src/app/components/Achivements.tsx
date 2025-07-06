@@ -4,95 +4,35 @@ import { Box, Heading, Text, VStack, HStack, Link } from "@chakra-ui/react";
 const achievements = [
   {
     id: 1,
-    description: (
-      <p className="text-lg text-gray-700">
-        Solved <strong>550+</strong> coding questions on <strong>GeeksForGeeks</strong> with a score of <strong>1812</strong>.
-        <Link
-                href={`https://www.geeksforgeeks.org/user/venkatarohank/`}
-                target='_blank'
-                className="text-lg font-semibold text-gray-300 hover:text-purple-400 transition-colors duration-300"
-                bgGradient="linear(to-r, pink.800, green.800)"
-                _hover={{ bgGradient: "linear(to-r, pink.600, green.600)" }}
-                bgClip={["text"]}
-                px={2}
-              >
-                (Profile Link)
-              </Link>
-      </p>
-    ),
+    description: "Solved 550+ coding questions on GeeksForGeeks with a score of 1812.",
+    link: "https://www.geeksforgeeks.org/user/venkatarohank/",
+    linkText: "(Profile Link)"
   },
   {
     id: 2,
-    description: (
-      <p className="text-lg text-gray-700">
-        Ranked <strong>4836</strong> globally on <strong>InterviewBit</strong> with over <strong>300</strong> solved questions.
-      </p>
-    ),
+    description: "Ranked 4836 globally on InterviewBit with over 300 solved questions.",
   },
   {
     id: 3,
-    description: (
-      <p className="text-lg text-gray-700">
-        Solved <strong>250+</strong> questions on <strong>Leetcode</strong>.
-        <Link
-                href={`https://leetcode.com/u/venkatarohank/`}
-                target='_blank'
-                className="text-lg font-semibold text-gray-300 hover:text-purple-400 transition-colors duration-300"
-                bgGradient="linear(to-r, pink.800, green.800)"
-                _hover={{ bgGradient: "linear(to-r, pink.600, green.600)" }}
-                bgClip={["text"]}
-                px={2}
-              >
-                (Profile Link)
-              </Link>
-      </p>
-    ),
+    description: "Solved 300+ questions on Leetcode.",
+    link: "https://leetcode.com/u/venkatarohank/",
+    linkText: "(Profile Link)"
   },
   {
     id: 4,
-    description: (
-      <p className="text-lg text-gray-700">
-        Contributed to open-source projects including <strong>LightDash</strong>, <strong>Rocket.Chat</strong>, and <strong>Cal.com</strong>.
-      </p>
-    ),
+    description: "Contributed to open-source projects including LightDash, Rocket.Chat and Cal.com",
   },
   {
     id: 5,
-    description: (
-      <p className="text-lg text-gray-700">
-        Completed <strong>Node.js</strong> Certification. 
-        <Link
-                href={`https://www.udemy.com/certificate/UC-10900e3a-74c5-452e-a905-b3d52f154758/`}
-                target='_blank'
-                className="text-lg font-semibold text-gray-300 hover:text-purple-400 transition-colors duration-300"
-                bgGradient="linear(to-r, pink.800, green.800)"
-                _hover={{ bgGradient: "linear(to-r, pink.600, green.600)" }}
-                bgClip={["text"]}
-                px={2}
-              >
-                (Certification Link)
-              </Link>
-      </p>
-    ),
+    description: "Completed Node.js Certification.",
+    link: "https://www.udemy.com/certificate/UC-10900e3a-74c5-452e-a905-b3d52f154758/",
+    linkText: "(Certification Link)"
   },
   {
     id: 6,
-    description: (
-      <p className="text-lg text-gray-700">
-        Completed <strong>React.js</strong> Certification. 
-        <Link
-                href={`https://www.udemy.com/certificate/UC-0f7a2701-4483-46a7-9086-a8500f829f08/`}
-                target='_blank'
-                className="text-lg font-semibold text-gray-300 hover:text-purple-400 transition-colors duration-300"
-                bgGradient="linear(to-r, pink.800, green.800)"
-                _hover={{ bgGradient: "linear(to-r, pink.600, green.600)" }}
-                bgClip={["text"]}
-                px={2}
-              >
-                (Certification Link)
-              </Link>
-      </p>
-    ),
+    description: "Completed React.js Certification.",
+    link: "https://www.udemy.com/certificate/UC-0f7a2701-4483-46a7-9086-a8500f829f08/",
+    linkText: "(Certification Link)"
   },
 ];
 
@@ -155,7 +95,39 @@ const Achievements = () => {
             className="relative bg-gradient-to-br from-lime-500 to-blue-500 p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group"
             variants={itemVariants}
           >
-            <div className="relative z-10">{achievement.description}</div>
+            {achievement.link ? (
+              <Link
+                href={achievement.link}
+                target="_blank"
+                className="block relative z-10 cursor-pointer"
+                _hover={{ textDecoration: "none" }}
+              >
+                <div className="text-lg text-gray-700">
+                  {achievement.description.split(' ').map((word, index) => {
+                    // Make numbers and key terms bold
+                    if (/^\d+/.test(word) || ['GeeksForGeeks', 'InterviewBit', 'Leetcode', 'LightDash', 'Rocket.Chat', 'Cal.com', 'Node.js', 'React.js'].includes(word.replace(/[^\w.]/g, ''))) {
+                      return <strong key={index}>{word} </strong>;
+                    }
+                    return word + ' ';
+                  })}
+                  <span className="text-lg font-semibold text-gray-300 hover:text-purple-400 transition-colors duration-300 bg-gradient-to-r from-pink-800 to-green-800 bg-clip-text px-2">
+                    {achievement.linkText}
+                  </span>
+                </div>
+              </Link>
+            ) : (
+              <div className="relative z-10">
+                <div className="text-lg text-gray-700">
+                  {achievement.description.split(' ').map((word, index) => {
+                    // Make numbers and key terms bold
+                    if (/^\d+/.test(word) || ['GeeksForGeeks', 'InterviewBit', 'Leetcode', 'LightDash', 'Rocket.Chat', 'Cal.com', 'Node.js', 'React.js'].includes(word.replace(/[^\w.]/g, ''))) {
+                      return <strong key={index}>{word} </strong>;
+                    }
+                    return word + ' ';
+                  })}
+                </div>
+              </div>
+            )}
 
             <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-purple-200 opacity-0 group-hover:opacity-100 rounded-lg transition-opacity duration-300"></div>
 
