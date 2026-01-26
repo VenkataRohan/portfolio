@@ -1,24 +1,26 @@
 "use client";
-import { Box, Heading, Text, VStack, HStack, UnorderedList, ListItem } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useRef } from "react";
+import { FaBuilding, FaBriefcase } from "react-icons/fa6"; // Standardizing with an icon
 
 const steps = [
   {
-    title: "Software Developer @ Equinix",
+    title: "AI Engineer",
     duration: "June 2023 - Present",
     companyName: "Equinix",
     description: [
-      "Built **HRGPT** - a **RAG (Retrieval-Augmented Generation)** system using **vector database** technology for intelligent HR assistance, achieving **95% user satisfaction** and reducing query response time by **85%**.",
-      "Developed **vectorization pipeline** for ServiceNow knowledge articles and deployed **webhook** in **Azure Function App** using **Node.js** for real-time database updates, improving knowledge retrieval accuracy by **90%**.",
-      "Established **CI/CD pipeline** using **GitHub Actions** for automated deployment and designed **ChatGPT-like interface** using **React.js** for HRGPT frontend, deployed **Node.js** server on **Azure App Service**.",
-      "Engineered a **full-stack application** to streamline user reassignment process in **Coupa**, ensuring pending approvals from departed employees were automatically transferred to their respective managers using **React**, **Node.js** and **MySQL**, reducing reassignment time by **80%**.",
-      "Streamlined work order approval process in **SAP FieldGlass** using **Node.js** integrated with **MS Teams**, allowing users to approve or reject directly from Teams, reducing manual effort by **75%**.",
-      "Automated visualization of supplier information from **Coupa** to **Oracle Fusion** using **React** and **Node.js**, reducing manual checking time by **90%** and ensuring accurate data flow by tracking incidents in **ServiceNow**."
+      "Architected **\"Sidekick\" Multi-Agent AI Platform**: Designed and deployed an enterprise LLM orchestration system using **LangGraph** with 4 specialized agents (HR, IT, Legal, General Query) serving 1,000+ employees; implemented intent classification using **GPT-4** with few-shot prompting achieving **95% routing accuracy** and **2s P95 latency** through **Redis caching** & async execution.",
+      "Built **Production RAG System (HRGPT)**: Engineered end-to-end retrieval pipeline processing **50K+ ServiceNow documents**; implemented **hybrid search** combining dense vectors (**text-embedding-3-large**, 3072-dim) and BM25 with **Azure AI Search**, achieving **0.89 MRR@10** and reducing irrelevant responses from 35% to 4% through metadata filtering and semantic reranking.",
+      "Optimized **RAG Performance & Quality**: Reduced query latency from 8.5s to 2.5s (**70% improvement**) via multi-level caching (**Redis L1**, vector cache L2) and parallel retrieval; implemented **query decomposition** for multi-hop questions, improving answer completeness by **60%** measured via **GPT-4-as-judge** evaluation framework.",
+      "Engineered **Real-time Data Ingestion Pipeline**: Built incremental sync system processing 5K+ ServiceNow updates daily using **Azure Functions** and **Service Bus**; implemented change data capture with delta checksums, **semantic chunking** (500 tokens, 50 overlap), and batch upserts reducing ingestion time by **75%** while maintaining 99.9% data freshness.",
+      "Implemented **LLM Observability & Guardrails**: Deployed end-to-end tracing using **LangSmith** and **Azure Application Insights** tracking token usage, latency (P50/P95/P99), and error rates; built **PII detection layer** using regex + NER models preventing 200+ potential data leaks, and implemented **RBAC-based context filtering** ensuring users only access authorized documents.",
+      "Deployed **Cost Optimization Strategies**: Reduced monthly **OpenAI API costs by 55%** ($12K to $5.4K) through prompt compression, streaming responses, and **intelligent model routing** (GPT-3.5-turbo for simple queries, GPT-4 for complex); implemented response caching achieving **40% cache hit rate** for repeated queries.",
+      "Automated **ERP Workflows**: Developed **Node.js microservices** integrating **SAP FieldGlass**, **Coupa**, and **MS Teams** enabling inline approvals via **Adaptive Cards**; automated 15K+ monthly supplier onboarding tasks reducing manual effort by **75%** and approval cycle time from 5 days to 6 hours through webhook-driven workflows."
     ],
   },
   {
-    title: "Software Developer Intern @ Equinix",
+    title: "Software Developer Intern",
     duration: "February 2023 - June 2023",
     companyName: "Equinix",
     description: [
@@ -27,7 +29,7 @@ const steps = [
     ],
   },
   {
-    title: "Software Developer Intern @ 5th Bridge Data Technologies LLP",
+    title: "Software Developer Intern",
     duration: "July 2022 - August 2022",
     companyName: "5th Bridge Data Technologies LLP",
     description: [
@@ -36,7 +38,7 @@ const steps = [
     ],
   },
   {
-    title: "Backend Developer Intern @ Content Erra",
+    title: "Backend Developer Intern",
     duration: "June 2021 - July 2021",
     companyName: "Content Erra",
     description: [
@@ -46,166 +48,99 @@ const steps = [
   },
 ];
 
-// Define animations using `@emotion/react`
-const fadeIn = keyframes`
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-`;
-
-const slideInFromLeft = keyframes`
-  0% { opacity: 0; transform: translateX(-100%); }
-  100% { opacity: 1; transform: translateX(0); }
-`;
-
 const Experience = () => {
-  // Use Intersection Observer to detect when the section is in view
-  const { ref: sectionRef, inView: sectionInView } = useInView({
-    threshold: 0.2, // Trigger when 20% of the section is visible
-  });
-
   return (
-    <section id="experience">
-      <Box
-        id="experience"
-        py={12}
-        bg="gray.900"
-        color="white"
-        ref={sectionRef}
-        position="relative"
-        overflow="hidden"
-      >
-        <Box maxW="7xl" mx="auto" px={6} position="relative" zIndex={10}>
-          {/* Section Title */}
-          <Box
-            textAlign="center"
-            mb={12}
-            animation={sectionInView ? `${slideInFromLeft} 1s ease-in-out` : "none"}
-          >
-            <Text
-              display="inline-block"
-              px={4}
-              py={2}
-              fontSize="sm"
-              fontWeight="semibold"
-              color="cyan.300"
-              bg="cyan.900"
-              rounded="full"
-              textTransform="uppercase"
-            >
-              My Experience
-            </Text>
-          </Box>
+    <section id="experience" className="py-24 bg-[#0a0a0a] relative overflow-hidden border-t border-gray-800/50">
+      {/* Decorative background bloom */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-900/10 rounded-full blur-[120px] pointer-events-none" />
 
-          {/* Vertical Stepper */}
-          <VStack spacing={0} align="start" position="relative">
-            {steps.map((step, index) => {
-              // Use Intersection Observer for each step
-              const { ref: stepRef, inView: stepInView } = useInView({
-                threshold: 0.2, // Trigger when 20% of the step is visible
-              });
+      {/* Subtle top gradient for separation */}
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-900/50 to-transparent pointer-events-none" />
 
-              return (
-                <HStack
-                  key={index}
-                  ref={stepRef}
-                  align="start"
-                  spacing={4}
-                  w="full"
-                  opacity={stepInView ? 1 : 0} // Start invisible for fade-in animation
-                  animation={
-                    stepInView ? `${fadeIn} 0.8s ease-in-out ${index * 0.2}s forwards` : "none"
-                  }
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: false, amount: 0.3 }}
+          className="text-center mb-20 "
+        >
+          <div className="inline-block px-4 py-1.5 mb-4 border border-cyan-500/30 rounded-full bg-cyan-950/30">
+            <span className="text-sm font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-2">
+              <FaBriefcase className="text-sm" />
+              Professional Experience
+            </span>
+          </div>
+        </motion.div>
+
+        <div className="relative border-l border-gray-800 ml-4 md:ml-12 space-y-16">
+          {steps.map((step, index) => {
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: false, margin: "-50px" }}
+                className="relative pl-8 md:pl-16"
+              >
+                {/* Timeline Connector */}
+                <div className="absolute -left-[5px] top-2 w-[10px] h-[10px] rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)] z-10 ring-4 ring-[#0a0a0a]" />
+
+                <motion.div
+                  whileHover={{ scale: 1.005 }}
+                  transition={{ duration: 0.3 }}
+                  className="group relative"
                 >
-                  {/* Step Indicator */}
-                  <Box position="relative" zIndex={10}>
-                    <Box
-                      w={10}
-                      h={10}
-                      bg="cyan.500"
-                      rounded="full"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      boxShadow="0 0 8px rgba(103, 232, 249, 0.6)"
-                      _hover={{
-                        transform: "scale(1.1)",
-                        transition: "transform 0.3s ease-in-out",
-                      }}
-                    >
-                      <Text color="white" fontWeight="bold" fontSize="sm">
-                        {index + 1}
-                      </Text>
-                    </Box>
-                    {/* Vertical Line */}
-                    {index !== steps.length - 1 && (
-                      <Box
-                        position="absolute"
-                        top="100%"
-                        left="50%"
-                        // h="calc(100%)" // Adjust based on spacing
-                        w="5px"
-                        bg="cyan.500"
-                        opacity="0.4"
-                        transform="translateX(-50%)"
-                      />
-                    )}
-                  </Box>
-
-                  {/* Step Content */}
-                  <Box
-                    w="full"
-                    pb={8}
-                  >
-                    <Box
-                      p={6}
-                      bg="gray.800"
-                      rounded="3xl"
-                      shadow="lg"
-                      borderWidth="2px"
-                      borderColor="cyan.800"
-                      transform="rotateY(0deg)" // Initial rotation
-                      transition="transform 0.6s ease-in-out, box-shadow 0.3s ease-in-out"
-                      _hover={{
-                        transform: "rotateY(15deg) translateY(-6px)", // 3D tilt effect
-                        boxShadow: "0 10px 20px rgba(103, 232, 249, 0.3)",
-                      }}
-                    >
-                      <Heading as="h3" size="lg" color="cyan.300" mb={2}>
+                  <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-4">
+                    <div>
+                      <h3 className="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors tracking-tight">
                         {step.title}
-                      </Heading>
-                      <Text fontSize="sm" fontWeight="semibold" color="cyan.100">
-                        {step.duration}
-                      </Text>
-                      <Text fontSize="sm" fontWeight="semibold" color="cyan.100" mt={1}>
+                      </h3>
+                      <div className="flex items-center gap-2 mt-1 text-cyan-200/90 font-medium text-lg">
+                        <FaBuilding className="text-sm opacity-70" />
                         {step.companyName}
-                      </Text>
-                      <Text mt={4} color="gray.300">
-                        <UnorderedList spacing={2}>
-                          {step.description.map((point, pointIndex) => (
-                            <ListItem key={pointIndex} color="gray.300">
-                              {point.split('**').map((part, partIndex) => 
-                                partIndex % 2 === 1 ? (
-                                  <Text as="span" key={partIndex} fontWeight="bold" color="cyan.200">
-                                    {part}
-                                  </Text>
-                                ) : (
-                                  part
-                                )
-                              )}
-                            </ListItem>
-                          ))}
-                        </UnorderedList>
-                      </Text>
-                    </Box>
-                  </Box>
-                </HStack>
-              );
-            })}
-          </VStack>
-        </Box>
-      </Box>
+                      </div>
+                    </div>
+                    <span className="mt-2 md:mt-0 text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                      {step.duration}
+                    </span>
+                  </div>
+
+                  <div className="relative bg-gray-900/40 border border-white/5 rounded-2xl p-6 md:p-8 hover:bg-gray-900/60 hover:border-cyan-500/20 transition-all duration-300 shadow-xl shadow-black/20">
+                    <ul className="space-y-4">
+                      {step.description.map((point, i) => (
+                        <li key={i} className="flex items-start text-gray-400 leading-relaxed text-[15px]">
+                          <span className="mr-4 mt-2 w-1.5 h-1.5 bg-cyan-500/70 rounded-full shrink-0 group-hover:bg-cyan-400 group-hover:shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-all" />
+                          <span>
+                            {point.split('**').map((part, partIndex) =>
+                              partIndex % 2 === 1 ? (
+                                <strong key={partIndex} className="text-cyan-200 font-semibold group-hover:text-cyan-400 transition-colors">
+                                  {part}
+                                </strong>
+                              ) : (
+                                paragraph(part)
+                              )
+                            )}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 };
+
+// Helper to sanitize markdown bold syntax properly
+function paragraph(text: string) {
+  return text;
+}
+
 
 export default Experience;

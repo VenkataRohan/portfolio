@@ -1,382 +1,304 @@
 "use client";
-import { Box, Container, Tag, Heading, Text, Link, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
-import { keyframes } from '@emotion/react';
+import { Box, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
+import { SiReact, SiNodedotjs, SiNextdotjs, SiMeteor, SiTypescript, SiRabbitmq, SiPostgresql, SiPrisma, SiNginx, SiSocketdotio, SiFirebase, SiMysql, SiThreedotjs } from "react-icons/si";
+import { FaDocker, FaGithub, FaCodeBranch } from "react-icons/fa6";
+import { IconType } from "react-icons";
 import { useInView } from 'react-intersection-observer';
 import { useState, useRef, useEffect } from 'react';
 import { animate, useMotionValue, motion } from "framer-motion";
 import useMeasure from "react-use-measure";
-import { log } from 'console';
-interface ProjectCardProps {
-  title: string;
-  description: string;
-  techStack: string[];
-  githubLink: string;
-  bgColor: string;
-  isOpenSource?: boolean;
-  onClick: () => void;
+
+interface TechItem {
+  name: string;
+  icon: IconType;
+  color: string;
 }
 
+interface ProjectData {
+  title: string;
+  description: string;
+  techStack: TechItem[];
+  githubLink: string;
+  isOpenSource?: boolean;
+}
+
+interface ProjectCardProps extends ProjectData {
+  onClick: () => void;
+}
 
 const projects = [
   {
     title: 'LightDash',
-    description: `Implemented frontend functionality for auto-triggering threshold configuration modals using threshold uuid. Reduced manual
-    configuration steps by 30%, improving setup time and enhancing the overall user experience for configuring alerts.`,
-    techStack: ['React', 'Node.js'],
+    description: `Implemented frontend functionality for auto-triggering threshold configuration modals using threshold uuid. Reduced manual configuration steps by 30%, improving setup time and enhancing the overall user experience for configuring alerts.`,
+    techStack: [
+      { name: 'React', icon: SiReact, color: 'text-cyan-400' },
+      { name: 'Node.js', icon: SiNodedotjs, color: 'text-green-500' }
+    ],
     githubLink: 'https://github.com/lightdash/lightdash/pull/12119',
-    bgColor: 'linear(to-br, teal.400, blue.500)', // Gradient background
-    isOpenSource : true
+    isOpenSource: true
   },
   {
     title: 'Cal.com',
-    description: `Enhanced user experience by adding functionality to preserve the order of questions asked during the booking process, ensuring
-    that confirmation emails are more intuitive and accurate.`,
-    techStack: ['Next.js'],
+    description: `Enhanced user experience by adding functionality to preserve the order of questions asked during the booking process, ensuring that confirmation emails are more intuitive and accurate.`,
+    techStack: [
+      { name: 'Next.js', icon: SiNextdotjs, color: 'text-white' }
+    ],
     githubLink: 'https://github.com/calcom/cal.com/pull/18192',
-    bgColor: 'linear(to-br, pink.400, yellow.500)', // Gradient background
-    isOpenSource : true
+    isOpenSource: true
   },
   {
     title: 'Rocket.Chat',
-    description: `Developed and raised a PR for the Notify on Reactions feature, enabling users to receive notifications for reactions added to their
-    messages. Improved user engagement by an estimated 20% in team interactions. Collaborated closely with project maintainers.`,
-    techStack: ['React', 'Meteor.js', 'TypeScript'],
+    description: `Notify on Reactions feature: Enabled users to receive notifications for reactions. Improved user engagement by ~20% in team interactions. Collaborated closely with project maintainers.`,
+    techStack: [
+      { name: 'React', icon: SiReact, color: 'text-blue-400' },
+      { name: 'Meteor.js', icon: SiMeteor, color: 'text-orange-500' },
+      { name: 'TypeScript', icon: SiTypescript, color: 'text-blue-600' }
+    ],
     githubLink: 'https://github.com/RocketChat/Rocket.Chat/pull/32475',
-    bgColor: 'linear(to-br, gray.400, orange.500)', // Gradient background
-    isOpenSource : true
+    isOpenSource: true
   },
   {
     title: 'Stock Exchange',
-    description: `Created a full-stack application that simulates Real time trading of stocks and containerized using Docker for efficient deployment.
-    processing, optimizing for high performance and fault tolerance and utilised Prisma ORM for database manipulation.Utilised Nginx for Load Balancing across websockets servers`,
-    techStack: ['React.js','Node.js','Typescript','RabbitMQ','PostgreSQL','Prisma','Docker','Nginx'],
+    description: `Real-time stock trading simulation. Microservices architecture, Dockerized, high-performance fault tolerance. Nginx load balancing for websockets.`,
+    techStack: [
+      { name: 'React', icon: SiReact, color: 'text-cyan-400' },
+      { name: 'Node.js', icon: SiNodedotjs, color: 'text-green-500' },
+      { name: 'RabbitMQ', icon: SiRabbitmq, color: 'text-orange-600' },
+      { name: 'PostgreSQL', icon: SiPostgresql, color: 'text-blue-400' },
+      { name: 'Docker', icon: FaDocker, color: 'text-blue-500' },
+      { name: 'Nginx', icon: SiNginx, color: 'text-green-600' }
+    ],
     githubLink: 'https://github.com/VenkataRohan/stock_exchange',
-    bgColor: 'linear(to-br, teal.500, purple.700)', // Gradient background
   },
   {
     title: 'Social Media App',
-    description: `Developed a cross-platform mobile application allowing users to log in via email, send messages using Socket.io, and share live
-    locations through expo-location and react-native-maps enhancing user interaction and engagement.
-    Added features like image, video, and document sharing, voice messages, scheduled messaging, group creation.`,
-    techStack: ['React Native', 'Node.js', 'Socket.io', 'Firebase'],
+    description: `Cross-platform mobile app. Login via email, real-time messaging (Socket.io), live location sharing. Media sharing, scheduled messaging, groups.`,
+    techStack: [
+      { name: 'React Native', icon: SiReact, color: 'text-cyan-400' },
+      { name: 'Node.js', icon: SiNodedotjs, color: 'text-green-500' },
+      { name: 'Socket.io', icon: SiSocketdotio, color: 'text-white' },
+      { name: 'Firebase', icon: SiFirebase, color: 'text-yellow-500' }
+    ],
     githubLink: 'https://github.com/VenkataRohan/expo-client',
-    bgColor: 'linear(to-br, blue.400, pink.500)', // Gradient background
   },
   {
     title: 'Parents Portal',
-    description: `Built a web application that displays marks secured by the student, his attendance, List of holidays of the current semester.
-    Added forgot password feature, OTP will be sent to registered email (Nodemailer). Allows parents to register a complaint.
-    Worked on staff login feature which enables staff members to edit the marks and attendance of the student.`,
-    techStack: ['Node.js', 'MySQl'],
+    description: `Student tracking portal: Marks, attendance, holidays. Forgot password (OTP). Parent complaints system. Staff login for data management.`,
+    techStack: [
+      { name: 'Node.js', icon: SiNodedotjs, color: 'text-green-500' },
+      { name: 'MySQL', icon: SiMysql, color: 'text-blue-500' }
+    ],
     githubLink: 'https://github.com/VenkataRohan/expo-client',
-    bgColor: 'linear(to-br, green.400, yellow.500)', // Gradient background
   },
   {
-    title: 'Interior Design',
-    description: `VR project - Reduced time and human efforts by 90% by creating a web application which allows users to design their room i.e move objects anywhere in the room using DragControls package and change the color of the objects and scale them to fit in the room using DatGUl package.`,
-    techStack: ['Three.js'],
+    title: 'Interior Design VR',
+    description: `Web VR app for room design. reduced effort by 90%. Drag & drop objects, color changing, scaling using Three.js controls.`,
+    techStack: [
+      { name: 'Three.js', icon: SiThreedotjs, color: 'text-white' }
+    ],
     githubLink: 'https://github.com/VenkataRohan/interior-design',
-    bgColor: 'linear(to-br, purple.800, gray.500)', // Gradient background
   },
 ];
-
-
-const floatAnimation = keyframes`
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-`;
-
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   description,
   techStack,
   githubLink,
-  bgColor,
   isOpenSource,
   onClick,
 }) => (
-  <motion.div
-    initial={{ opacity: 0, y: -20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
-    viewport={{ once: true }}
-    whileHover={{
-      scale: 1.05, // Slight scaling effect
-      boxShadow: '0 8px 20px red', 
-      borderRadius : '2rem',
-      background: 'linear-gradient(45deg, #6a1b9a, #d32f2f)', // Add your gradient here
-      // padding: '20px', // Optional padding
-    }}
-    style={{
-    }}
+  <div
+    className="relative group mx-4 flex flex-col justify-between w-[85vw] md:w-[400px] min-h-[400px] p-6 rounded-2xl bg-gray-900 border border-gray-800 hover:border-cyan-500/50 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-cyan-900/20 shrink-0"
+    onClick={onClick}
   >
-    <Box
-      bgGradient={bgColor}
-      p="1.5rem"
-      m={2}
-      borderRadius="1rem"
-      onClick={onClick}
-      cursor="pointer"
-      flex="0 0 auto"
-      w={{ base: '280px', sm: '300px', md: '320px' }} // Fixed card width
-      minH="500px" // Minimum height to ensure consistency
-      // h={{ base: '800px', md: '400px' }} // Responsive height
-      mx={4}
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between" // Ensure content is spaced properly
-    >
+    {/* Gradient Glow Effect */}
+    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-      <Box>
-        <Heading as="h3" size="lg" mb={3} color="white" fontFamily="bold, sans-serif">
+    <div className="flex flex-col flex-grow">
+      <div className="flex justify-between items-start mb-4">
+        <h3 className="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors tracking-tight">
           {title}
-        </Heading>
-        <Text mb={4} color="gray.100" fontSize="md" lineHeight="1.5">
-          {description}
-        </Text>
+        </h3>
+        {isOpenSource && (
+          <span className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-green-400 bg-green-900/30 border border-green-800 rounded-full shrink-0 ml-2">
+            Open Source
+          </span>
+        )}
+      </div>
 
-        <Box mb={4}>
-          <Text fontWeight="bold" color="gray.900" mb={2}>Tech Stack:</Text>
-          <Box display="flex" flexWrap="wrap" gap={2}>
-            {techStack.map((tech, index) => (
-              <Tag key={index} 
-              bgGradient="linear(to-r, teal.800, red.800)"
-              borderRadius="full" size="md" variant="solid">
-                {tech}
-              </Tag>
-            ))}
-          </Box>
-        </Box>
-      </Box>
-            {isOpenSource &&  
-               <Heading
-               as="h6"
-               size="md"
-               mt={4}
-               color="transparent"
-               fontFamily="bold, sans-serif"
-               bgGradient="linear(to-br, pink.900, green.800)"
-               backgroundClip="text"
-             >
-               Open Source Contribution
-             </Heading>
-             
-            }
+      <p className="text-gray-400 text-lg leading-relaxed mb-6 line-clamp-none flex-grow">
+        {description}
+      </p>
 
-      <Link
-        href={githubLink}
-        color="gray.800"
-        _hover={{
-          textDecoration: 'underline',
-          color: 'blue.700',
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.15)',
-        }}
-        display="flex"
-        alignItems="center"
-        mt="auto" // Push the link to the bottom
-        target='_blank'
-      >
-        View on GitHub
-      </Link>
-    </Box>
-  </motion.div>
+      {/* Tech Icons */}
+      <div className="flex flex-wrap gap-3 mb-6 mt-auto">
+        {techStack.slice(0, 5).map((tech, index) => (
+          <div key={index} className="relative group/icon">
+            <tech.icon className={`text-2xl ${tech.color} hover:scale-110 transition-transform bg-gray-800 p-1.5 rounded-lg box-content`} />
+          </div>
+        ))}
+        {techStack.length > 5 && (
+          <span className="text-gray-500 text-xs self-center">+{techStack.length - 5} more</span>
+        )}
+      </div>
+    </div>
+
+    {/* Bottom Link */}
+    <div className="pt-4 border-t border-gray-800 flex items-center justify-between">
+      <span className="text-sm text-cyan-500 font-medium group-hover:underline flex items-center gap-2">
+        View Details <span className="text-xs">→</span>
+      </span>
+      <FaGithub className="text-gray-500 group-hover:text-white transition-colors" />
+    </div>
+  </div>
 );
 
 const Project: React.FC = () => {
-
-  const SLOW_DURATION = 100;
-  const FAST_DURATION = 25;
+  const SLOW_DURATION = 95;
+  const FAST_DURATION = 15;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedProject, setSelectedProject] = useState<ProjectCardProps | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
   let [ref, { width }] = useMeasure();
   const xTranslation = useMotionValue(0);
   const [rerender, setRerender] = useState<boolean>(false);
   const [mustFinish, setMustFinish] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(FAST_DURATION);
-  // Handle project click to open modal
-  const handleProjectClick = (project: ProjectCardProps) => {
+
+  const handleProjectClick = (project: ProjectData) => {
     setSelectedProject(project);
     onOpen();
   };
 
-
   useEffect(() => {
     let controls: any;
-    let finalPosition = -2462;
+    let finalPosition = -width / 2 - 8; // Adjust based on width of items
 
-    if(mustFinish) {
-
-        controls = animate(xTranslation, [xTranslation.get(), finalPosition], {
+    if (mustFinish) {
+      controls = animate(xTranslation, [xTranslation.get(), finalPosition], {
         ease: "linear",
-        duration: duration * (1 - xTranslation.get() / finalPosition), onComplete: () =>{
-        setMustFinish(false);
-        setRerender (!rerender);
-        },
+        duration: duration * (1 - xTranslation.get() / finalPosition),
+        onComplete: () => {
+          setMustFinish(false);
+          setRerender(!rerender);
+        }
       });
-    } else{
-      
-        controls = animate(xTranslation, [0, finalPosition], {
-        ease: "linear", 
-        duration: duration, 
-        repeat: Infinity, 
-        repeatType: "loop", 
+    } else {
+      controls = animate(xTranslation, [0, finalPosition], {
+        ease: "linear",
+        duration: duration,
+        repeat: Infinity,
+        repeatType: "loop",
         repeatDelay: 0,
-        })
-      }
+      });
+    }
 
     return () => controls?.stop();
-  }, [width, rerender, mustFinish, duration])
+  }, [xTranslation, width, duration, rerender, mustFinish]);
 
 
   return (
-    <section id="projects" style={{ scrollMarginTop: "30px" }}>
-      <Container
-        maxW={"100%"}
-        py={20}
-        px={6}
-        centerContent
-        bgGradient="linear(to-r, #7928CA, #FF0080)"
-        borderRadius="lg"
-        boxShadow="0 4px 20px rgba(0, 0, 0, 0.2)"
-        overflow={'visible'}
-      >
+    <section id="projects" className="py-24 bg-gray-950 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-900/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10 text-center mb-16">
         <motion.div
-          initial={{ opacity: 0, y: -20, x: -100 }}
-          whileInView={{ opacity: 1, y: 0, x: 0 }}
-          transition={{ duration: 1 }}
-        // viewport={{ once : true }}
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: false, amount: 0.3 }}
+          className="flex flex-col items-center"
         >
-          <Box
-            textAlign="center"
-            mb={12}
-          >
-            <Text
-              display="inline-block"
-              px={4}
-              py={2}
-              fontSize="lg"
-              fontWeight="semibold"
-              color="cyan.300"
-              bg="cyan.900"
-              rounded="full"
-              textTransform="uppercase"
-            >
-              Open Source Contributions / Projects
-            </Text>
+          <Box className="inline-block px-4 py-1.5 mb-4 border border-cyan-500/30 rounded-full bg-cyan-950/30">
+            <p className="text-sm font-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent uppercase tracking-wider flex items-center gap-2">
+              <FaCodeBranch className="text-cyan-400" />
+              Open Source & Projects
+            </p>
           </Box>
+          {/* <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight mb-4">
+            Featured Work
+          </h2> */}
+          <p className="text-slate-400 max-w-2xl mx-auto text-center">
+            A collection of my contributions to major open-source projects and personal technical experiments.
+          </p>
         </motion.div>
-        <Box
-          ref={containerRef}
-          overflowX="scroll" // Enable manual scrolling
-          w="100%"
-          py={4}
-          sx={{
-            '&::-webkit-scrollbar': {
-              display: 'none',
-            },
-            scrollbarWidth: 'none',
-            scrollBehavior: 'smooth', // Smooth scrolling
+      </div>
+
+      <div className="w-full overflow-hidden py-12 mask-fade-sides">
+        <motion.div
+          className="flex"
+          ref={ref}
+          style={{ x: xTranslation }}
+          onHoverStart={() => {
+            setMustFinish(true);
+            setDuration(SLOW_DURATION);
+          }}
+          onHoverEnd={() => {
+            setMustFinish(true);
+            setDuration(FAST_DURATION);
           }}
         >
-          <motion.div
-            className='flex flex-row'
-            ref={ref}
-            style={{ x: xTranslation }}
-            initial="hidden"
-            whileInView="visible"
-            onHoverStart={() => {
-              setMustFinish(true);
-              setDuration(SLOW_DURATION);
-            }}
-            onHoverEnd={() => { 
-              setMustFinish(true);
-              setDuration(FAST_DURATION);
-            }}
-          >
-            {[...projects, ...projects].map((project, index) => {
+          {[...projects, ...projects].map((project, index) => (
+            <ProjectCard
+              key={index}
+              {...project}
+              onClick={() => handleProjectClick(project)}
+            />
+          ))}
+        </motion.div>
+      </div>
 
-              return (
-                <ProjectCard
-                  key={index}
-                  title={project.title}
-                  description={project.description}
-                  techStack={project.techStack}
-                  githubLink={project.githubLink}
-                  bgColor={project.bgColor}
-                  isOpenSource={project.isOpenSource}
-                  //@ts-ignore
-                  onClick={() => handleProjectClick(project)}
-                />
-              );
-            })}
-          </motion.div>
-        </Box>
-      </Container>
+      {/* Styled Modal */}
+      <Modal isOpen={isOpen} onClose={onClose} size="2xl" isCentered motionPreset='slideInBottom'>
+        <ModalOverlay bg="blackAlpha.800" backdropFilter="blur(8px)" />
+        <ModalContent className="!bg-gray-900 !border !border-gray-700 !rounded-2xl !text-white !p-0 overflow-hidden shadow-2xl shadow-cyan-900/20">
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-6 border-b border-gray-800 flex justify-between items-center">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              {selectedProject?.title}
+            </h2>
+            <ModalCloseButton className="!static !text-gray-400 hover:!text-white hover:!bg-gray-700 !rounded-full p-2" />
+          </div>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl" motionPreset="scale">
-  <ModalOverlay bg="blackAlpha.600" backdropFilter="blur(10px)" />
-  <ModalContent
-    bg="gray.800"
-    color="white"
-    borderRadius="lg"
-    border="1px solid"
-    borderColor="gray.700"
-    boxShadow="xl"
-  >
-    <ModalHeader
-      fontSize="2xl"
-      fontWeight="bold"
-      bgGradient="linear(to-r, blue.400, purple.400)"
-      bgClip="text"
-      pb={4}
-    >
-      {selectedProject?.title}
-    </ModalHeader>
-    <ModalCloseButton
-      size="lg"
-      color="gray.400"
-      _hover={{ color: "white", bg: "gray.700" }}
-    />
-    <ModalBody>
-      <Text mb={6} fontSize="lg" lineHeight="tall">
-        {selectedProject?.description}
-      </Text>
-      <Box
-        mb={6}
-        p={4}
-        bg="gray.700"
-        borderRadius="md"
-        borderLeft="4px solid"
-        borderColor="blue.400"
-      >
-        <Text fontWeight="semibold" color="gray.200">
-          Tech Stack:
-        </Text>
-        <Text color="gray.300">{selectedProject?.techStack.join(", ")}</Text>
-      </Box>
-      <Link
-        href={selectedProject?.githubLink}
-        color="blue.200"
-        _hover={{
-          textDecoration: "underline",
-          color: "blue.400",
-        }}
-        display="inline-flex"
-        alignItems="center"
-        gap={2}
-        target='_blank'
-      >
-        <Box as="span" fontSize="lg">
-          👨‍💻
-        </Box>
-        View on GitHub
-      </Link>
-    </ModalBody>
-  </ModalContent>
-</Modal>
+          <ModalBody className="!p-8">
+            <p className="text-gray-300 text-lg leading-relaxed mb-8">
+              {selectedProject?.description}
+            </p>
+
+            <div className="mb-8">
+              <h4 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-3">Technologies</h4>
+              <div className="flex flex-wrap gap-2">
+                {selectedProject?.techStack.map((tech, index) => (
+                  <div key={index} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-800 border border-gray-700 text-gray-300 text-sm">
+                    <tech.icon className={tech.color} />
+                    <span>{tech.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <a
+              href={selectedProject?.githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-xl transition-all duration-200 transform hover:-translate-y-1 shadow-lg shadow-blue-900/30"
+            >
+              <FaGithub className="mr-2 text-xl" />
+              View Source Code on GitHub
+            </a>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <style jsx global>{`
+        .mask-fade-sides {
+           mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+           -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+      `}</style>
     </section>
   );
 };

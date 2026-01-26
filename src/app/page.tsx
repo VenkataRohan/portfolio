@@ -15,9 +15,9 @@ export default function Main() {
       <Home />
       <AboutMe />
       <Experience />
-      <BestProject/>
+      <BestProject />
       <Project />
-      <Skill />
+      {/* <Skill />  */}
       <Achievements />
       <Contact />
     </div>

@@ -1,255 +1,239 @@
 "use client";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Stars, Sphere } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Sparkles, Trail } from "@react-three/drei";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
+import { FaGithub, FaLinkedin, FaFileLines, FaEnvelope, FaChevronDown } from "react-icons/fa6";
 
-// Custom Blinking Stars Component with TypeScript
-const BlinkingStars = ({
-  count,
-  radius,
-  depth,
-  factor,
-  fade,
-}: {
-  count: number;
-  radius: number;
-  depth: number;
-  factor: number;
-  fade: boolean;
-}) => {
-  const starsRef = useRef<THREE.Points>(null!);
-  const [starSize, setStarSize] = useState(1); // State for star size
-  const [starBrightness, setStarBrightness] = useState(1); // State for star brightness
+const ShootingStar = () => {
+  const ref = useRef<THREE.Mesh>(null);
 
-  useEffect(() => {
-    
-    const stars = starsRef.current;
-    const starPositions = stars.geometry.attributes.position.array;
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime();
+    if (ref.current) {
+      // Move diagonally very slow
+      ref.current.position.x -= 0.05;
+      ref.current.position.y -= 0.01;
 
-    // Function to update star brightness and size
-    const updateStars = () => {
-
-      for (let i = 0; i < starPositions.length; i += 10) {
-        const brightness = Math.random() * 0.5 + 0.5; // Random brightness between 0.5 and 1
-        stars.geometry.attributes.color.array[i / 3] = brightness * starBrightness;
+      // Reset if out of view (Extended bounds for full screen travel)
+      if (ref.current.position.y < -10 || ref.current.position.x < -30) {
+        const randomX = 50 + Math.random() * 30;   // Start further right (off-screen)
+        const randomY = 5 + Math.random() * 20;    // Start top/mid
+        const randomZ = -15 + Math.random() * 10;  // Deep background
+        ref.current.position.set(randomX, randomY, randomZ);
       }
-      stars.geometry.attributes.color.needsUpdate = true;
-      //@ts-ignore
-      stars.material.size = starSize; // Update star size
-    };
-
-    // Animate star brightness and size
-    const interval = setInterval(updateStars, 500); // Blink every 500ms
-    return () => clearInterval(interval);
-  }, [starSize, starBrightness]);
+    }
+  });
 
   return (
-    <Stars
-      ref={starsRef}
-      // radius={radius}
-      depth={depth}
-      count={count}
-      factor={factor}
-      saturation={0}
-      // fade={fade}
-    />
+    <Trail
+      width={0.6} // Thicker to be visible at distance
+      length={8} // Longer tail
+      color={new THREE.Color(1, 0.4, 0.2)} // Fire Orange/Red
+      attenuation={(t) => t * t} // Smooth fade
+    >
+      <mesh ref={ref} position={[30, 10, -10]}>
+        <sphereGeometry args={[0.15]} />
+        <meshBasicMaterial color={[3, 1, 0.5]} toneMapped={false} />
+      </mesh>
+    </Trail>
   );
 };
 
-const Home = () => {
+const SocialLink = ({ href, icon: Icon, label, download = false }: any) => (
+  <motion.a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    download={download ? label : undefined}
+    whileHover={{ scale: 1.05, y: -2 }}
+    whileTap={{ scale: 0.95 }}
+    className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/50 transition-all duration-300 group"
+  >
+    <Icon className="text-gray-400 group-hover:text-blue-400 transition-colors" size={18} />
+    <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
+      {label}
+    </span>
+  </motion.a>
+);
 
+const Home = () => {
   return (
     <section
       id="home"
-      className="relative h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white flex items-center justify-center text-center px-4 overflow-hidden"
+      className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden pt-20"
     >
-      {/* 3D Background Animation */}
+      {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Canvas>
+        <Canvas camera={{ position: [0, 0, 1] }}>
           <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-          {/* Blinking Stars */}
-          <BlinkingStars
-            radius={200}
-            depth={50}
-            count={5000}
-            factor={4}
-            fade
+
+          {/* Layer 1: Distant Stars (White, Static-ish) */}
+          <Sparkles
+            count={12000}
+            scale={120}
+            size={3}
+            speed={0.1}
+            opacity={1}
+            color="#ffffff"
           />
-          {/* Crescent Moon */}
-          <mesh position={[5, 40, -100]}>
-            <sphereGeometry args={[1.5, 32, 32]} />
-            <meshStandardMaterial color="white" metalness={0.1} roughness={0.1} />
-          </mesh>
+
+          {/* Layer 2: Foreground Galaxy Dust (Blue/Purple, Moving) */}
+          <Sparkles
+            count={3000}
+            scale={90}
+            size={5}
+            speed={0.4}
+            opacity={0.6}
+            color="#4f46e5"
+          />
+
+          {/* Shooting Stars */}
+          <ShootingStar />
+          <ShootingStar />
+          <ShootingStar />
+
           <OrbitControls
             enableZoom={false}
             enablePan={false}
             autoRotate
-            autoRotateSpeed={1.5}
+            autoRotateSpeed={0.5}
           />
         </Canvas>
       </div>
 
-      {/* Content */}
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 z-10 w-full max-w-6xl mx-auto px-4 md:px-8"
-      >
-        {/* Profile Picture */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 pointer-events-none z-0" />
+
+      {/* Main Content: flex-col center everything */}
+      <div className="w-full max-w-4xl mx-auto px-4 md:px-8 relative z-10 flex flex-col items-center justify-center gap-8">
+
+        {/* Profile Image (Centered) */}
         <motion.div
-          className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 mt-16 md:mt-0 rounded-full overflow-hidden border-4 border-white/20 hover:border-purple-500 transition-all duration-300"
-          whileHover={{ scale: 1.05 }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }} // Smoother transition
+          viewport={{ once: true }}
+          className="relative group shrink-0"
         >
-          <Image
-            src="/profile.jpg" // Replace with your image path
-            alt="Venkata Rohan"
-            width={256}
-            height={256}
-            className="object-cover w-full h-full"
-          />
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-500" />
+          <div className="relative w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-white/10 bg-gray-900 ring-4 ring-black">
+            <Image
+              src="/profile.jpg"
+              alt="Venkata Rohan"
+              fill
+              className="object-contain transition-transform duration-500 group-hover:scale-105"
+              priority
+            />
+          </div>
         </motion.div>
 
-        {/* Text Content */}
-        <motion.div
-          className="text-center md:text-left space-y-3 md:space-y-4 w-full md:w-1/2"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          {/* Title */}
-          <motion.h1
-            className="font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-green-600"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-          >
-            <p className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl break-words">Hi, I'm Venkata Rohan</p>
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            className="text-sm sm:text-lg md:text-xl font-bold text-gray-300 break-words"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            Software Developer @ Equinix | Open Source Contributor
-          </motion.p>
-
-          <motion.p
-            className="text-sm sm:text-lg md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-lime-600 break-words"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            venkatarohank@gmail.com
-          </motion.p>
-          {/* Links */}
+        {/* Text Content (Centered) */}
+        <div className="text-center w-full">
           <motion.div
-            className="flex flex-wrap justify-center md:justify-start gap-4 md:gap-8 pt-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.2 }}
-          >
-            <a
-              href="https://github.com/VenkataRohan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-purple-400 transition-colors text-sm sm:text-lg font-semibold flex items-center gap-1 md:gap-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-6 h-6"
-              >
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.766.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-              </svg>
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/venkata-rohan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-purple-400 transition-colors text-sm sm:text-lg font-semibold flex items-center gap-1 md:gap-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-6 h-6"
-              >
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-              </svg>
-              LinkedIn
-            </a>
-            <a
-              href="./Venkata_Rohan_Resume.pdf" // Update this path
-              download="Venkata_Rohan_Resume.pdf"
-              className="text-white hover:text-purple-400 transition-colors text-sm sm:text-lg font-semibold flex items-center gap-1 md:gap-2"
-            >
-               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-6 h-6"
-              >
-                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
-              </svg>
-              Resume
-            </a>
-            {/* <p>venkatarohank@gmail.com</p> */}
-            {/* Resume Download Button */}
-            {/* <a
-               href="./Venkata_Rohan_Resume.pdf" // Update this path
-               download="Venkata_Rohan_Resume.pdf"
-               className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-6 h-6"
-              >
-                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
-              </svg>
-              Resume
-            </a> */}
-          </motion.div>
-
-          {/* Description */}
-          <motion.div
-            className="flex flex-col w-full"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 md:p-6 border border-white/10">
-              <p className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed">
-                Strategic-minded professional with strong analytical acumen and mathematical proficiency, 
-                characterized by rapid learning agility and a demonstrated ability to excel in demanding, 
-                high-stakes professional environments. Focused on making substantial contributions through 
-                technical expertise and innovative problem-solving approaches.
-              </p>
-            </div>
+            {/* Updated Title Style */}
+            <h2 className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-transparent bg-clip-text font-bold tracking-[0.2em] text-sm md:text-lg mb-3">
+              AI Engineer
+            </h2>
+            {/* 
+                  Adjusted size: Bigger than others but not overwhelming.
+                  Mobile: 2.5rem (40px) -> Desktop: 4.5rem (72px)
+                */}
+            <h1 className="font-extrabold text-white tracking-tight mb-4 leading-none" style={{ fontSize: 'clamp(1.5rem, 4vw, 3.5rem)' }}>
+              Hi, I'm{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400">
+                Venkata Rohan
+              </span>
+            </h1>
           </motion.div>
-        </motion.div>
-      </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+            viewport={{ once: true }}
+            className="flex flex-wrap items-center justify-center gap-5 mb-8"
+          >
+            <SocialLink
+              href="https://github.com/VenkataRohan"
+              icon={FaGithub}
+              label="GitHub"
+            />
+            <SocialLink
+              href="https://www.linkedin.com/in/venkata-rohan"
+              icon={FaLinkedin}
+              label="LinkedIn"
+            />
+            <SocialLink
+              href="mailto:venkatarohank@gmail.com"
+              icon={FaEnvelope}
+              label="Email"
+            />
+            <SocialLink
+              href="./Venkata_Rohan_Resume.pdf"
+              icon={FaFileLines}
+              label="Resume"
+              download
+            />
+          </motion.div>
+
+          {/* Added textWrap: balance for perfect symmetry */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
+            viewport={{ once: true }}
+            className="text-gray-300 text-md md:text-lg font-light leading-relaxed max-w-4xl mx-auto text-center block"
+            style={{ textWrap: "balance" }}
+          >
+            Strategic-minded professional with strong analytical acumen.
+            Focused on delivering high-impact solutions through technical expertise
+            and innovative problem-solving.
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Scroll Down Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center gap-0 cursor-pointer group"
+        onClick={() => {
+          const aboutSection = document.getElementById("about");
+          if (aboutSection) {
+            aboutSection.scrollIntoView({ behavior: "smooth" });
+          }
+        }}
+      >
+        {[0, 1, 2].map((i) => (
+          <motion.div
+            key={i}
+            animate={{
+              y: [0, 5, 0],
+              opacity: [0.3, 1, 0.3],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              delay: i * 0.2,
+              ease: "easeInOut",
+            }}
+            className="-mt-2 first:mt-0"
+          >
+            <FaChevronDown
+              className="text-white/70 group-hover:text-white transition-colors duration-300"
+              size={16 + i * 6}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   );
 };

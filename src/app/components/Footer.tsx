@@ -1,11 +1,11 @@
-// components/Footer.js
 const Footer = () => {
-    return (
-      <footer className="bg-blue-600 text-white text-center py-4">
-        <p>© 2025 Venkata Rohan. All rights reserved.</p>
-      </footer>
-    );
-  };
-  
-  export default Footer;
-  
+  return (
+    <footer className="bg-[#050505] text-center py-8">
+      <p className="text-gray-500 text-sm">
+        © {new Date().getFullYear()} Venkata Rohan. Built with Next.js.
+      </p>
+    </footer>
+  );
+};
+
+export default Footer;
