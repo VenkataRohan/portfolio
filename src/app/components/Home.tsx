@@ -139,7 +139,7 @@ const Home = () => {
           >
             {/* Updated Title Style */}
             <h2 className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-transparent bg-clip-text font-bold tracking-[0.2em] text-sm md:text-lg mb-3">
-              AI Engineer
+              Staff AI Engineer · Agentic AI · LLM Systems
             </h2>
             {/* 
                   Adjusted size: Bigger than others but not overwhelming.
@@ -192,9 +192,7 @@ const Home = () => {
             className="text-gray-300 text-md md:text-lg font-light leading-relaxed max-w-4xl mx-auto text-center block"
             style={{ textWrap: "balance" }}
           >
-            Strategic-minded professional with strong analytical acumen.
-            Focused on delivering high-impact solutions through technical expertise
-            and innovative problem-solving.
+            I build production AI agents that act on real enterprise systems: multi-agent orchestration, RAG, and MCP tool servers on Google Cloud and Microsoft Azure, secured with verified-identity controls and human-in-the-loop approvals.
           </motion.p>
         </div>
       </div>

@@ -1,21 +1,112 @@
 "use client";
 import { motion } from 'framer-motion';
-import { FaBrain, FaSitemap, FaCode, FaDatabase, FaLaptopCode, FaCloud, FaJava, FaPython, FaDocker, FaGit, FaTerminal, FaEye, FaMicrochip, FaNetworkWired, FaHtml5, FaCss3, FaDiagramProject, FaServer, FaUser } from "react-icons/fa6";
-import { SiLangchain, SiJavascript, SiTypescript, SiFastapi, SiNodedotjs, SiExpress, SiRedis, SiApachekafka, SiRabbitmq, SiPostgresql, SiMysql, SiMongodb, SiNextdotjs, SiTailwindcss, SiNginx, SiGithubactions, SiOpenai, SiReact } from "react-icons/si";
+import { FaBrain, FaSitemap, FaCode, FaDatabase, FaLaptopCode, FaCloud, FaJava, FaPython, FaDocker, FaGit, FaTerminal, FaEye, FaMicrochip, FaNetworkWired, FaDiagramProject, FaServer, FaUser, FaRobot, FaPlug, FaShieldHalved, FaKey, FaUserCheck, FaMagnifyingGlass, FaLayerGroup } from "react-icons/fa6";
+import { SiJavascript, SiTypescript, SiFastapi, SiNodedotjs, SiExpress, SiRedis, SiApachekafka, SiRabbitmq, SiPostgresql, SiMysql, SiMongodb, SiNextdotjs, SiTailwindcss, SiNginx, SiGithubactions, SiReact, SiGooglecloud, SiKubernetes, SiHelm, SiPrisma } from "react-icons/si";
 import { VscAzure } from "react-icons/vsc";
 
 const skills = [
   {
-    category: "AI & LLM",
+    category: "Agentic AI",
+    icon: FaRobot,
+    items: [
+      { name: "Google ADK", icon: SiGooglecloud },
+      { name: "A2A Protocol", icon: FaNetworkWired },
+      { name: "Model Context Protocol (MCP)", icon: FaPlug },
+      { name: "FastMCP", icon: FaPlug },
+      { name: "OpenAI Agents SDK", icon: FaRobot },
+      { name: "Multi-Agent Orchestration", icon: FaSitemap },
+      { name: "Human-in-the-Loop", icon: FaUserCheck }
+    ]
+  },
+  {
+    category: "LLM & ML",
     icon: FaBrain,
     items: [
+      { name: "Gemini (Vertex AI)", icon: SiGooglecloud },
       { name: "Azure OpenAI", icon: VscAzure },
-      { name: "LangChain", icon: SiLangchain },
-      { name: "LangGraph", icon: FaDiagramProject },
-      { name: "Vector Databases", icon: FaDatabase },
-      { name: "Azure AI Search", icon: VscAzure },
       { name: "Prompt Engineering", icon: FaTerminal },
-      { name: "LLM Observability", icon: FaEye }
+      { name: "Guardrails", icon: FaShieldHalved },
+      { name: "Deep Learning", icon: FaMicrochip }
+    ]
+  },
+  {
+    category: "RAG",
+    icon: FaMagnifyingGlass,
+    items: [
+      { name: "Vector & Hybrid Search", icon: FaMagnifyingGlass },
+      { name: "Azure AI Search", icon: VscAzure },
+      { name: "Embeddings", icon: FaLayerGroup },
+      { name: "Semantic Reranking", icon: FaLayerGroup },
+      { name: "Query Decomposition", icon: FaSitemap },
+      { name: "LLM-as-Judge Evaluation", icon: FaEye }
+    ]
+  },
+  {
+    category: "Cloud",
+    icon: FaCloud,
+    items: [
+      { name: "Google Cloud", icon: SiGooglecloud },
+      { name: "Vertex AI", icon: SiGooglecloud },
+      { name: "GKE", icon: SiKubernetes },
+      { name: "Workload Identity", icon: FaKey },
+      { name: "Azure Functions", icon: VscAzure },
+      { name: "Azure App Service", icon: VscAzure },
+      { name: "Azure Service Bus", icon: VscAzure },
+      { name: "Azure Cosmos DB", icon: VscAzure }
+    ]
+  },
+  {
+    category: "Security & Observability",
+    icon: FaShieldHalved,
+    items: [
+      { name: "OAuth 2.0 Token Exchange", icon: FaKey },
+      { name: "PingFederate", icon: FaKey },
+      { name: "Zero-Trust Identity", icon: FaShieldHalved },
+      { name: "PII Redaction", icon: FaShieldHalved },
+      { name: "Correlated JSON Logging", icon: FaEye }
+    ]
+  },
+  {
+    category: "Backend & Databases",
+    icon: FaServer,
+    items: [
+      { name: "FastAPI", icon: SiFastapi },
+      { name: "Node.js", icon: SiNodedotjs },
+      { name: "Express.js", icon: SiExpress },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Redis", icon: SiRedis },
+      { name: "MongoDB", icon: SiMongodb },
+      { name: "MySQL", icon: SiMysql },
+      { name: "RabbitMQ", icon: SiRabbitmq },
+      { name: "Kafka", icon: SiApachekafka },
+      { name: "Prisma", icon: SiPrisma }
+    ]
+  },
+  {
+    category: "DevOps",
+    icon: FaDocker,
+    items: [
+      { name: "Docker", icon: FaDocker },
+      { name: "Kubernetes", icon: SiKubernetes },
+      { name: "Helm", icon: SiHelm },
+      { name: "GitOps", icon: FaGit },
+      { name: "GitHub Actions", icon: SiGithubactions },
+      { name: "NGINX", icon: SiNginx },
+      { name: "CI/CD", icon: FaNetworkWired }
+    ]
+  },
+  {
+    category: "Languages & Frontend",
+    icon: FaCode,
+    items: [
+      { name: "Python", icon: FaPython },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "JavaScript", icon: SiJavascript },
+      { name: "Java", icon: FaJava },
+      { name: "SQL", icon: FaDatabase },
+      { name: "React.js", icon: SiReact },
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "Tailwind CSS", icon: SiTailwindcss }
     ]
   },
   {
@@ -29,57 +120,6 @@ const skills = [
       { name: "CQRS", icon: FaDatabase },
       { name: "CAP Theorem", icon: FaServer },
       { name: "Distributed Systems", icon: FaSitemap }
-    ]
-  },
-  {
-    category: "Languages",
-    icon: FaCode,
-    items: [
-      { name: "Java", icon: FaJava },
-      { name: "Python", icon: FaPython },
-      { name: "JavaScript", icon: SiJavascript },
-      { name: "TypeScript", icon: SiTypescript },
-      { name: "SQL", icon: FaDatabase }
-    ]
-  },
-  {
-    category: "Backend & Databases",
-    icon: FaDatabase,
-    items: [
-      { name: "FastAPI", icon: SiFastapi },
-      { name: "Node.js", icon: SiNodedotjs },
-      { name: "Express.js", icon: SiExpress },
-      { name: "Redis", icon: SiRedis },
-      { name: "Kafka", icon: SiApachekafka },
-      { name: "RabbitMQ", icon: SiRabbitmq },
-      { name: "PostgreSQL", icon: SiPostgresql },
-      { name: "MySQL", icon: SiMysql },
-      { name: "MongoDB", icon: SiMongodb },
-      { name: "Azure Cosmos DB", icon: VscAzure }
-    ]
-  },
-  {
-    category: "Frontend",
-    icon: FaLaptopCode,
-    items: [
-      { name: "React.js", icon: SiReact },
-      { name: "Next.js", icon: SiNextdotjs },
-      { name: "HTML", icon: FaHtml5 },
-      { name: "CSS", icon: FaCss3 },
-      { name: "Tailwind CSS", icon: SiTailwindcss }
-    ]
-  },
-  {
-    category: "Cloud & DevOps",
-    icon: FaCloud,
-    items: [
-      { name: "Azure Function App", icon: VscAzure },
-      { name: "Azure App Service", icon: VscAzure },
-      { name: "Docker", icon: FaDocker },
-      { name: "NGINX", icon: SiNginx },
-      { name: "Git", icon: FaGit },
-      { name: "GitHub Actions", icon: SiGithubactions },
-      { name: "CI/CD", icon: FaNetworkWired }
     ]
   }
 ];
@@ -123,7 +163,7 @@ const AboutMe = () => {
                 </h3>
               </div>
               <p className="text-lg leading-relaxed text-gray-300">
-                <span className="font-bold text-cyan-200">AI Engineer</span> specializing in <span className="font-bold text-cyan-200">production-grade LLM systems</span> and <span className="font-bold text-cyan-200">multi-agent orchestration</span>, with deep expertise in building scalable <span className="font-bold text-cyan-200">Retrieval-Augmented Generation (RAG)</span> pipelines on Microsoft Azure. Delivered <span className="font-bold text-cyan-200">70% latency reduction</span> (8.5s → 2.5s) and <span className="font-bold text-cyan-200">55% cost savings</span> ($12K → $5.4K) through vector search optimization, caching strategies, and efficient model orchestration. Designed high-precision <span className="font-bold text-cyan-200">intent-based routing systems</span> achieving 95% classification accuracy for 1,000+ enterprise users. Strong experience across retrieval quality, LLM evaluation, observability, and guardrails, with proven ability to deploy end-to-end AI solutions from experimentation to <span className="font-bold text-cyan-200">full-stack production deployment</span>, including React-based UIs, API-driven backends, and cloud-native services.
+                <span className="font-bold text-cyan-200">Staff AI Engineer</span> at Equinix building production <span className="font-bold text-cyan-200">LLM, RAG, and multi-agent systems</span> across <span className="font-bold text-cyan-200">Microsoft Azure</span> and <span className="font-bold text-cyan-200">Google Cloud</span>, grounded in backend and distributed-systems engineering. On Azure, I contributed to the Sidekick multi-agent assistant and the HRGPT RAG system, delivering a <span className="font-bold text-cyan-200">70% latency reduction</span> (8.5s → 2.5s), <span className="font-bold text-cyan-200">55% LLM cost savings</span> ($12K → $5.4K), and <span className="font-bold text-cyan-200">95% intent-routing accuracy</span> for 1,000+ enterprise users. On Google Cloud, I build <span className="font-bold text-cyan-200">Google ADK</span> agents on <span className="font-bold text-cyan-200">Gemini (Vertex AI)</span> for the Equinix Agentic Platform: a multi-agent assistant that acts on ServiceNow, Coupa, Oracle ERP, and SAP Fieldglass through <span className="font-bold text-cyan-200">MCP</span> servers and <span className="font-bold text-cyan-200">A2A</span>, running on <span className="font-bold text-cyan-200">GKE</span> with verified-identity controls, human-in-the-loop approvals, and PII-safe logging.
               </p>
             </div>
           </motion.div>

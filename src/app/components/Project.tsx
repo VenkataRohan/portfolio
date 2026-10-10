@@ -28,8 +28,8 @@ interface ProjectCardProps extends ProjectData {
 
 const projects = [
   {
-    title: 'LightDash',
-    description: `Implemented frontend functionality for auto-triggering threshold configuration modals using threshold uuid. Reduced manual configuration steps by 30%, improving setup time and enhancing the overall user experience for configuring alerts.`,
+    title: 'Lightdash',
+    description: `Made alert links open the threshold edit modal directly (merged PR #12119), removing the manual navigation to the threshold editor.`,
     techStack: [
       { name: 'React', icon: SiReact, color: 'text-cyan-400' },
       { name: 'Node.js', icon: SiNodedotjs, color: 'text-green-500' }
@@ -39,7 +39,7 @@ const projects = [
   },
   {
     title: 'Cal.com',
-    description: `Enhanced user experience by adding functionality to preserve the order of questions asked during the booking process, ensuring that confirmation emails are more intuitive and accurate.`,
+    description: `Preserved the custom order of booking questions on the booking confirmation page (merged PR #18192), making confirmations accurate and easier to read.`,
     techStack: [
       { name: 'Next.js', icon: SiNextdotjs, color: 'text-white' }
     ],
@@ -48,7 +48,7 @@ const projects = [
   },
   {
     title: 'Rocket.Chat',
-    description: `Notify on Reactions feature: Enabled users to receive notifications for reactions. Improved user engagement by ~20% in team interactions. Collaborated closely with project maintainers.`,
+    description: `Built a "Notify on Reactions" feature that alerts users when others react to their messages (PR #32475, open, under maintainer review).`,
     techStack: [
       { name: 'React', icon: SiReact, color: 'text-blue-400' },
       { name: 'Meteor.js', icon: SiMeteor, color: 'text-orange-500' },
@@ -82,17 +82,8 @@ const projects = [
     githubLink: 'https://github.com/VenkataRohan/expo-client',
   },
   {
-    title: 'Parents Portal',
-    description: `Student tracking portal: Marks, attendance, holidays. Forgot password (OTP). Parent complaints system. Staff login for data management.`,
-    techStack: [
-      { name: 'Node.js', icon: SiNodedotjs, color: 'text-green-500' },
-      { name: 'MySQL', icon: SiMysql, color: 'text-blue-500' }
-    ],
-    githubLink: 'https://github.com/VenkataRohan/expo-client',
-  },
-  {
     title: 'Interior Design VR',
-    description: `Web VR app for room design. reduced effort by 90%. Drag & drop objects, color changing, scaling using Three.js controls.`,
+    description: `Web VR room-design app built with Three.js: drag-and-drop objects, color changes, and scaling. Reduced design effort by 90%.`,
     techStack: [
       { name: 'Three.js', icon: SiThreedotjs, color: 'text-white' }
     ],

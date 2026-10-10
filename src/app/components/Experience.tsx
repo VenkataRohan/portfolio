@@ -6,17 +6,31 @@ import { FaBuilding, FaBriefcase } from "react-icons/fa6"; // Standardizing with
 
 const steps = [
   {
-    title: "AI Engineer",
-    duration: "June 2023 - Present",
+    title: "Staff AI Engineer",
+    duration: "March 2026 - Present",
     companyName: "Equinix",
     description: [
-      "Architected **\"Sidekick\" Multi-Agent AI Platform**: Designed and deployed an enterprise LLM orchestration system using **LangGraph** with 4 specialized agents (HR, IT, Legal, General Query) serving 1,000+ employees; implemented intent classification using **GPT-4** with few-shot prompting achieving **95% routing accuracy** and **2s P95 latency** through **Redis caching** & async execution.",
-      "Built **Production RAG System (HRGPT)**: Engineered end-to-end retrieval pipeline processing **50K+ ServiceNow documents**; implemented **hybrid search** combining dense vectors (**text-embedding-3-large**, 3072-dim) and BM25 with **Azure AI Search**, achieving **0.89 MRR@10** and reducing irrelevant responses from 35% to 4% through metadata filtering and semantic reranking.",
-      "Optimized **RAG Performance & Quality**: Reduced query latency from 8.5s to 2.5s (**70% improvement**) via multi-level caching (**Redis L1**, vector cache L2) and parallel retrieval; implemented **query decomposition** for multi-hop questions, improving answer completeness by **60%** measured via **GPT-4-as-judge** evaluation framework.",
-      "Engineered **Real-time Data Ingestion Pipeline**: Built incremental sync system processing 5K+ ServiceNow updates daily using **Azure Functions** and **Service Bus**; implemented change data capture with delta checksums, **semantic chunking** (500 tokens, 50 overlap), and batch upserts reducing ingestion time by **75%** while maintaining 99.9% data freshness.",
-      "Implemented **LLM Observability & Guardrails**: Deployed end-to-end tracing using **LangSmith** and **Azure Application Insights** tracking token usage, latency (P50/P95/P99), and error rates; built **PII detection layer** using regex + NER models preventing 200+ potential data leaks, and implemented **RBAC-based context filtering** ensuring users only access authorized documents.",
-      "Deployed **Cost Optimization Strategies**: Reduced monthly **OpenAI API costs by 55%** ($12K to $5.4K) through prompt compression, streaming responses, and **intelligent model routing** (GPT-3.5-turbo for simple queries, GPT-4 for complex); implemented response caching achieving **40% cache hit rate** for repeated queries.",
-      "Automated **ERP Workflows**: Developed **Node.js microservices** integrating **SAP FieldGlass**, **Coupa**, and **MS Teams** enabling inline approvals via **Adaptive Cards**; automated 15K+ monthly supplier onboarding tasks reducing manual effort by **75%** and approval cycle time from 5 days to 6 hours through webhook-driven workflows."
+      "Led development of **DIO Agent on the Equinix Agentic Platform (Google Cloud)**: a **Google ADK** multi-agent system on **Gemini 2.5 Flash (Vertex AI)** whose root orchestrator routes IT, procurement, and finance requests to 4 sub-agents (ServiceNow, Coupa, Oracle ERP, SAP Fieldglass) operating **29 MCP tools**; owned root routing and the Coupa sub-agent, and added Postgres-backed sessions and SSE streaming on the platform's registry-based **A2A**/MCP discovery; in production on **GKE**.",
+      "Engineered **agent runtime controls** with ADK callbacks: extended stop-at-tool callbacks so **24 card-returning tools** skip a redundant LLM pass, injected session identity context into identity-scoped tool calls, and wrote push notifications into agent sessions for later recall.",
+      "Primary author of the **Coupa procurement MCP server** (11 tools for approvals, lookups, receiving, and soft-close) that re-validates **record-level authorization** (approval chains, requesters, receiver roles) before every write, with **human-in-the-loop** confirm-before-act cards and a PO-change diff engine; built an **Oracle ERP** vendor-statement tool with fail-closed org-unit access control and a Power Automate flow trigger for the SharePoint export.",
+      "Hardened **agent identity**: fixed attribution spoofing in Coupa write actions by recording the verified session identity instead of caller-supplied context, ported signed-session verification to the Oracle and Fieldglass MCP servers, and forwarded ServiceNow tokens only for verified identities.",
+      "Built **PII-safe logging**: PII/secret log redaction (JWTs, emails, phone numbers, Luhn-validated card numbers, employee IDs) and correlation-ID JSON logging across the agent and 4 MCP servers, with optional HMAC-SHA256 user pseudonymization in the agent.",
+      "Shipped agents to **production on GKE**: rolled out the agent and all 4 MCP servers through **Helm GitOps** with Workload Identity and change-gated CI/CD; diagnosed a dev-environment outage of the I/O-bound agent and added memory + CPU **HPA** autoscaling with tolerant liveness probes.",
+      "Extended the **Action Broker** (Azure, Node.js/TypeScript) with a generic **Adaptive Card rendering engine** for agent actions delivered to Microsoft Teams and the web portal over the broker's **Azure Service Bus**/**MongoDB**/SSE pipeline."
+    ],
+  },
+  {
+    title: "Senior Associate Software Engineer",
+    duration: "June 2023 - March 2026",
+    companyName: "Equinix",
+    description: [
+      "Built **Sidekick Multi-Agent Assistant**: Contributed to an enterprise LLM assistant on the **OpenAI Agents SDK** with specialized HR, IT, and Legal agents and tool integrations serving 1,000+ employees; implemented intent classification using **GPT-4** with few-shot prompting achieving **95% routing accuracy** and 2s P95 latency through async execution.",
+      "Built **Production RAG System (HRGPT)**: Engineered an end-to-end retrieval pipeline over **3K+ ServiceNow knowledge articles** on **Azure AI Search**, achieving **0.89 MRR@10** and reducing irrelevant responses from 35% to 4% through metadata filtering and semantic reranking.",
+      "Optimized **RAG Performance & Quality**: Reduced query latency from 8.5s to 2.5s (**70% improvement**) via parallel retrieval and server-side vectorization; implemented **query decomposition** for multi-hop questions, improving answer completeness by **60%** as measured by a **GPT-4-as-judge** evaluation framework.",
+      "Engineered **Incremental Data Ingestion Pipeline**: Built an incremental sync with **Azure Functions** processing 5K+ ServiceNow updates daily into the search index, reducing ingestion time by **75%** while maintaining 99.9% data freshness.",
+      "Implemented **LLM Observability & Guardrails**: Monitored the RAG service with **Azure Application Insights** (token usage, latency, error rates); built a **PII detection layer** that prevented 200+ potential data leaks, and **RBAC-based context filtering** so users only retrieve authorized documents.",
+      "Optimized **LLM Cost**: Reduced monthly **OpenAI API costs by 55%** ($12K to $5.4K) through prompt compression and output-token limits.",
+      "Automated **ERP Workflows**: Developed **Node.js microservices** integrating **SAP Fieldglass**, **Coupa**, and **Microsoft Teams** for inline approvals via **Adaptive Cards**; automated 15K+ monthly supplier-onboarding tasks, reducing manual effort by **75%** and approval cycle time from 5 days to 6 hours through webhook-driven workflows."
     ],
   },
   {
@@ -24,8 +38,8 @@ const steps = [
     duration: "February 2023 - June 2023",
     companyName: "Equinix",
     description: [
-      "Developed a **DAG Visualizer** using **React Flow** to preview DAGs before deployment, generating interactive graphs for visualizing upstream and downstream task dependencies, reducing deployment errors by **30%**.",
-      "Created a robust **Oracle Integration Cloud (OIC)** integration to eliminate discrepancies in ledger postings, fully automating the process to save **24 hours** of manual effort per month and minimizing risk of manual errors."
+      "Developed a **DAG Visualizer** using **React Flow** to preview DAGs before deployment, generating interactive graphs of upstream and downstream task dependencies and reducing deployment errors by **30%**.",
+      "Built an **Oracle Integration Cloud (OIC)** integration that eliminated discrepancies in ledger postings, fully automating the process to save **24 hours** of manual effort per month and minimizing the risk of manual errors."
     ],
   },
   {
@@ -33,8 +47,8 @@ const steps = [
     duration: "July 2022 - August 2022",
     companyName: "5th Bridge Data Technologies LLP",
     description: [
-      "Implemented **customizable Kendo grids** and **multi-step forms** in **React** for school supply list management.",
-      "Built **APIs** to retrieve and update quote request data in the database."
+      "Implemented **customizable Kendo grids** and **multi-step forms** in **React** for school supply-list management.",
+      "Built **APIs** to retrieve and update quote-request data in the database."
     ],
   },
   {
@@ -42,8 +56,8 @@ const steps = [
     duration: "June 2021 - July 2021",
     companyName: "Content Erra",
     description: [
-      "Designed an algorithm with **O(n) time complexity** to reduce manual effort by **50%**.",
-      "Extracting and processing **disability benefits data** efficiently."
+      "Designed an algorithm with **O(n) time complexity** that reduced manual effort by **50%**.",
+      "Extracted and processed **disability-benefits data** efficiently."
     ],
   },
 ];

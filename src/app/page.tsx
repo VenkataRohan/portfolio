@@ -1,8 +1,8 @@
 'use client';
 
 import Experience from './components/Experience';
+import AgenticWork from './components/AgenticWork';
 import Project from './components/Project';
-import Skill from './components/Skill';
 import Achievements from './components/Achivements';
 import AboutMe from './components/About';
 import Home from './components/Home';
@@ -15,9 +15,9 @@ export default function Main() {
       <Home />
       <AboutMe />
       <Experience />
+      <AgenticWork />
       <BestProject />
       <Project />
-      {/* <Skill />  */}
       <Achievements />
       <Contact />
     </div>
