@@ -173,7 +173,7 @@ const AboutMe = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.05 }}
           >
             <div className="flex items-center gap-4 mb-8 border-l-4 border-cyan-500 pl-4">
               <FaLaptopCode className="text-3xl text-cyan-400" />
