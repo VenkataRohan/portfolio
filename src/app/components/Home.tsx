@@ -1,53 +1,127 @@
 "use client";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sparkles, Trail } from "@react-three/drei";
-import { motion } from "framer-motion";
+import { OrbitControls, Sparkles } from "@react-three/drei";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { FaGithub, FaLinkedin, FaFileLines, FaEnvelope, FaChevronDown } from "react-icons/fa6";
 
-const ShootingStar = () => {
-  const ref = useRef<THREE.Mesh>(null);
+const STAR_DEPTH = 20;
+const STAR_HEAD_COLOR = new THREE.Color("#dbe8ff");
+const randomBetween = (min: number, max: number) => min + Math.random() * (max - min);
 
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    if (ref.current) {
-      // Move diagonally very slow
-      ref.current.position.x -= 0.05;
-      ref.current.position.y -= 0.01;
+// Thin tapered streak: bright at the head (+x), black at the tail (-x).
+// With additive blending black is invisible, so the tail fades out cleanly.
+const useStreakGeometry = () =>
+  useMemo(() => {
+    const geometry = new THREE.PlaneGeometry(1, 1);
+    const positions = geometry.attributes.position;
+    const colors = new Float32Array(positions.count * 3);
+    for (let i = 0; i < positions.count; i++) {
+      const c = positions.getX(i) > 0 ? STAR_HEAD_COLOR : new THREE.Color(0, 0, 0);
+      c.toArray(colors, i * 3);
+    }
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    return geometry;
+  }, []);
 
-      // Reset if out of view (Extended bounds for full screen travel)
-      if (ref.current.position.y < -10 || ref.current.position.x < -30) {
-        const randomX = 50 + Math.random() * 30;   // Start further right (off-screen)
-        const randomY = 5 + Math.random() * 20;    // Start top/mid
-        const randomZ = -15 + Math.random() * 10;  // Deep background
-        ref.current.position.set(randomX, randomY, randomZ);
-      }
+const ShootingStar = ({ initialDelay }: { initialDelay: number }) => {
+  const groupRef = useRef<THREE.Group>(null);
+  const materialRef = useRef<THREE.MeshBasicMaterial>(null);
+  const geometry = useStreakGeometry();
+  const star = useRef({
+    active: false,
+    wait: initialDelay,
+    age: 0,
+    life: 1,
+    velocity: new THREE.Vector2(),
+  });
+
+  useFrame((state, delta) => {
+    const group = groupRef.current;
+    const material = materialRef.current;
+    if (!group || !material) return;
+    const s = star.current;
+
+    if (!s.active) {
+      s.wait -= delta;
+      if (s.wait > 0) return;
+
+      // Spawn somewhere in the upper/right part of the view, heading down-left
+      const camera = state.camera as THREE.PerspectiveCamera;
+      const halfH = STAR_DEPTH * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const halfW = halfH * camera.aspect;
+      const angle = THREE.MathUtils.degToRad(randomBetween(20, 35));
+      const speed = randomBetween(25, 40);
+      s.velocity.set(-Math.cos(angle), -Math.sin(angle)).multiplyScalar(speed);
+      group.position.set(
+        randomBetween(-0.2, 1) * halfW,
+        randomBetween(0.3, 1) * halfH,
+        -STAR_DEPTH
+      );
+      group.rotation.z = Math.atan2(s.velocity.y, s.velocity.x);
+      group.scale.set(randomBetween(3, 5), randomBetween(0.04, 0.06), 1);
+      s.life = randomBetween(1, 1.4);
+      s.age = 0;
+      s.active = true;
+      group.visible = true;
+    }
+
+    s.age += delta;
+    group.position.x += s.velocity.x * delta;
+    group.position.y += s.velocity.y * delta;
+    material.opacity = Math.sin(Math.PI * Math.min(s.age / s.life, 1)) * 0.8;
+
+    if (s.age >= s.life) {
+      s.active = false;
+      s.wait = randomBetween(4, 10);
+      group.visible = false;
     }
   });
 
   return (
-    <Trail
-      width={0.6} // Thicker to be visible at distance
-      length={8} // Longer tail
-      color={new THREE.Color(1, 0.4, 0.2)} // Fire Orange/Red
-      attenuation={(t) => t * t} // Smooth fade
-    >
-      <mesh ref={ref} position={[30, 10, -10]}>
-        <sphereGeometry args={[0.15]} />
-        <meshBasicMaterial color={[3, 1, 0.5]} toneMapped={false} />
+    <group ref={groupRef} visible={false}>
+      <mesh geometry={geometry} position={[-0.5, 0, 0]}>
+        <meshBasicMaterial
+          ref={materialRef}
+          vertexColors
+          transparent
+          opacity={0}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+          toneMapped={false}
+        />
       </mesh>
-    </Trail>
+    </group>
   );
 };
 
-const SocialLink = ({ href, icon: Icon, label, download = false }: any) => (
+// Follows the camera so streaks stay on screen while OrbitControls auto-rotates
+const ShootingStars = () => {
+  const ref = useRef<THREE.Group>(null);
+
+  useFrame(({ camera }) => {
+    if (ref.current) {
+      ref.current.position.copy(camera.position);
+      ref.current.quaternion.copy(camera.quaternion);
+    }
+  });
+
+  return (
+    <group ref={ref}>
+      <ShootingStar initialDelay={2} />
+      <ShootingStar initialDelay={7} />
+    </group>
+  );
+};
+
+const SocialLink = ({ href, icon: Icon, label, download }: any) => (
   <motion.a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    download={download ? label : undefined}
+    download={download}
     whileHover={{ scale: 1.05, y: -2 }}
     whileTap={{ scale: 0.95 }}
     className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/50 transition-all duration-300 group"
@@ -60,6 +134,8 @@ const SocialLink = ({ href, icon: Icon, label, download = false }: any) => (
 );
 
 const Home = () => {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       id="home"
@@ -91,9 +167,7 @@ const Home = () => {
           />
 
           {/* Shooting Stars */}
-          <ShootingStar />
-          <ShootingStar />
-          <ShootingStar />
+          {!reduceMotion && <ShootingStars />}
 
           <OrbitControls
             enableZoom={false}
@@ -179,7 +253,7 @@ const Home = () => {
               href="./Venkata_Rohan_Resume.pdf"
               icon={FaFileLines}
               label="Resume"
-              download
+              download="Venkata_Rohan_Resume.pdf"
             />
           </motion.div>
 

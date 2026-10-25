@@ -17,7 +17,7 @@ interface WorkItem {
 const agentFlow = [
   "Employee · Sidekick web / Microsoft Teams",
   "Platform orchestrator · A2A",
-  "DIO Agent · Google ADK · Gemini 2.5 Flash",
+  "DIO Agent · Google ADK · Gemini 3.5 Flash",
   "Sub-agents · ServiceNow · Coupa · Oracle ERP · SAP Fieldglass",
   "MCP servers · Streamable HTTP · 29 tools",
   "Enterprise APIs → Adaptive Card response",
@@ -30,8 +30,9 @@ const work: WorkItem[] = [
     period: "2026",
     status: "In production",
     icon: FaRobot,
-    summary: "Google ADK multi-agent assistant on Gemini 2.5 Flash (Vertex AI) for IT, procurement, and finance self-service on the Equinix Agentic Platform.",
+    summary: "Google ADK multi-agent assistant on Gemini 3.5 Flash (Vertex AI) for IT, procurement, and finance self-service on the Equinix Agentic Platform.",
     highlights: [
+      "**7K+ enterprise actions per month** on a platform with **9.5K+ monthly users**",
       "Root orchestrator routing to **4 sub-agents** over **29 MCP tools**",
       "**A2A** agent card, registry-based MCP discovery, SSE streaming",
       "Stop-at-tool callbacks extended so **24 card-returning tools** skip an extra LLM pass",
@@ -47,7 +48,7 @@ const work: WorkItem[] = [
     icon: FaPlug,
     summary: "MCP tool servers that let agents act on Coupa, Oracle ERP, ServiceNow, and SAP Fieldglass with in-tool authorization.",
     highlights: [
-      "Primary author of the **Coupa** server: **11 tools** for approvals, receiving, and soft-close",
+      "Primary author of the **Coupa** server: **11 tools** for approvals, receiving, and soft-close, handling **2.4K+ approvals per month**",
       "**Record-level authorization** (approvers, requesters, receivers) re-validated before every write",
       "**Human-in-the-loop** confirm-before-act preview cards and a PO-change diff engine",
       "**Oracle ERP** vendor statements with fail-closed org-unit access control",
@@ -65,7 +66,7 @@ const work: WorkItem[] = [
       "Fixed attribution spoofing: Coupa writes record the **verified session identity**, not caller-supplied context",
       "Signed-session verification ported to the **Oracle** and **Fieldglass** MCP servers",
       "ServiceNow tokens forwarded **only for verified identities**",
-      "PII/secret redaction and correlation-ID JSON logs across the agent and **4 MCP servers**",
+      "PII/secret redaction (JWTs, SSNs, Luhn-validated card numbers) and correlation-ID JSON logs across **5 services**",
     ],
     stack: ["Python", "OAuth 2.0", "PingFederate", "pytest"],
   },
@@ -98,15 +99,17 @@ const work: WorkItem[] = [
     stack: ["OpenAI Agents SDK", "Azure OpenAI", "FastAPI", "Python"],
   },
   {
-    title: "HRGPT: Production RAG",
+    title: "Equinix GPT: Production RAG",
     platform: "Microsoft Azure",
     period: "2023 – 2026",
     status: "Production",
     icon: FaMagnifyingGlass,
-    summary: "RAG over 3K+ ServiceNow knowledge articles on Azure AI Search.",
+    summary: "Hybrid retrieval with semantic reranking on Azure AI Search over 15K+ ServiceNow, Confluence, and SharePoint documents (44K chunks).",
     highlights: [
-      "**0.89 MRR@10**; irrelevant responses cut from **35% to 4%**",
+      "**0.90 Hit@5** and **0.74 MRR@10**, **+56% over BM25**, on a 181-query stratified golden set",
+      "LLM judge confirmed relevant context in the top 5 for **95% of queries**",
       "Latency **8.5s → 2.5s** via parallel retrieval and server-side vectorization",
+      "Audited all 44K chunks: **4.2K duplicates**, 175 stale chunks, and 76% embedded without titles, each mapped to a fix",
       "Incremental ingestion of **5K+ daily updates** with Azure Functions",
     ],
     stack: ["Azure AI Search", "Azure OpenAI", "Azure Functions", "Node.js", "TypeScript"],
@@ -209,9 +212,11 @@ const AgenticWork = () => {
           ))}
         </div>
 
-        <p className="text-center text-gray-600 text-sm mt-10">
-          Built at Equinix. Source code is proprietary, so descriptions cover architecture only.
-        </p>
+        <div className="mt-16 flex justify-center">
+          <p className="max-w-2xl px-6 py-4 text-center text-gray-500 text-sm leading-relaxed rounded-xl border border-gray-800 bg-gray-950/40">
+            Built at Equinix. Source code is proprietary, so descriptions cover architecture only.
+          </p>
+        </div>
       </div>
     </section>
   );
